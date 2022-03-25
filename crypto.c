@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-
+//test
 void PermutationTableau(){
     // algo de fisher yates
     //
