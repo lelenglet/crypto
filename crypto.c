@@ -5,15 +5,33 @@
 
 #define N 28
 
-void PermutationTableau(char alpha[],int longueur){
+char* copieur(const char *originale)
+{
+
+    char *copie=NULL;
+
+    copie=malloc((strlen(originale))*sizeof(char));
+    strcpy(copie,originale);
+
+    return copie; // on retourne le pointeur vers la copie de la chaine de caractere
+}
+
+
+
+
+void Permutation(char sortie[]){
     int i ; // compteur
     int random;
+    char alphabet[N];
+    strcpy(alphabet,"ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
+    strcpy(sortie,alphabet);//alphabet de départ
     char temp;
-    for (i=longueur-2; i>1; i--){ // longueur-2 pour exclure la dernière case contenant '/0' de la permutation
+
+    for (i=strlen(sortie)-2; i>1; i--){ // longueur-2 pour exclure la dernière case contenant '/0' de la permutation
         random = rand () % i;
-        temp= alpha[i];
-        alpha[i]=alpha[random];
-        alpha[random]=temp;
+        temp= sortie[i];
+        sortie[i]=sortie[random];
+        sortie[random]=temp;
     }
     // algo de fisher yates
     //
@@ -25,8 +43,12 @@ void PermutationTableau(char alpha[],int longueur){
     // permutation valeur place j et i
 }
 
-int indice_in_alpha(char alphabet [], char carac ){
+
+
+int indice_in_alpha(char carac){
     int indice=0;
+    char alphabet[N];
+    strcpy(alphabet,"ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
     while (alphabet[indice]!=carac){
         indice++;
     }
@@ -35,63 +57,127 @@ int indice_in_alpha(char alphabet [], char carac ){
     //retourne indice
 }
 
-char Chiffrement(char text[], char clef[], char alphabet[],int longueur_text){
-    int i ;
+
+void Chiffrement(char sortie[], char text[], char clef[]){
+    int i =0;
     int indice;
-    char sortie [longueur_text+1];
-    for (i=0;i<longueur_text;i++){
-        indice=indice_in_alpha(alphabet,text[i]);
+    while (text[i]!='\0'){
+        indice=indice_in_alpha(text[i]);
         sortie[i]=clef[indice];
+        i++;
     }
-    printf("%s",sortie);
-    return * sortie;
     // on parcourt le texte avec une boucle for avec i allant de 0 a longueur_text-1
     // on prends le carac et et on le remplace avec la clef de chiffrement
     // on retourne le message chiffré
 }
 
-char Dechiffrement(char text[], char clef[], char alphabet[],int longueur_text){
-    int i ;
-    int indice;
-    char sortie [longueur_text+1];
-    for (i=0;i<longueur_text;i++){
-        indice=indice_in_alpha(clef,text[i]);
-        sortie[i]=alphabet[indice];
+
+int indice_in_clef(char clef[],char carac){
+    int indice=0;
+    while (clef[indice]!=carac){
+        indice++;
     }
-    printf("%s",sortie);
-    return * sortie;
+    return indice;
+    //fonction permettant de trouver l'indice du carac dans l'alaphabet
+    //retourne indice
+}
+
+void Dechiffrement(char sortie[], char text[], char clef[]){
+    int i =0;
+    int indice;
+    char alphabet[N];
+    strcpy(alphabet,"ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
+
+    while (text[i]!='\0'){
+        indice=indice_in_clef(clef,text[i]);
+        sortie[i]=alphabet[indice];
+        i++;
+    }
 }
 
 
-char Changement_carac(char carac ,char alphabet[]){
+
+
+char Changement_carac(char carac){
     char sortie=' ';
     if ((carac<'a' || carac>'z')&& (carac<'A' ||carac>'Z') && carac!=' '){
-        sortie=' ';
+        if (carac==':' || carac=='!' || carac=='?' || carac==',' || carac=='.' || carac=='\''){
+            sortie=' ';
+        }}
+    else {
+        if(carac>='a' && carac<='z'){
+            sortie=carac+('A'-'a');
+        }
+        else {
+            sortie=carac;
+        }
     }
     return sortie;
 }
 
-char *  Nettoyage(char text[], char alphabet[],int longueur_text){
-    int i ;
-    for (i=0;i<longueur_text;i++){
-        text[i]=Changement_carac(text[i],alphabet);
+void  Nettoyage(char sortie[],char text[]){
+    int i=0 ;
+    while (text[i]!='\0'){
+        sortie[i]=Changement_carac(text[i]);
+        i++;
     }
-    return text;
 }
 
 
 int main(){
     srand(time(NULL));
-    char alphabet[N];
-    strcpy(alphabet,"ABCDEFGHIJKLMNOPQRSTUVWXYZ "); //alphabet de départ
     char permutation[N];
-    strcpy(permutation,alphabet);// alphabet qui sera permuté
-    PermutationTableau(permutation,N);
-    printf("%s\n%s",permutation,alphabet);
-    char text [101];
-    char * sortie [101];
-    scanf("%s",text);
-    strcpy(sortie,Chiffrement(text,permutation,alphabet,101));
+    Permutation(permutation);
+    printf("%s\n",permutation);
+
+
+    char text[]="BONJOURààà";
+    printf("%s\n",text);
+        char sortie[strlen(text)];
+        Nettoyage(sortie,text);
+        printf("%s\n",sortie);
+/*
+    Chiffrement(sortie,text,permutation);
+    printf("%s\n",sortie);
+
+    char sortie2[strlen(text)];
+    Dechiffrement(sortie2,sortie,permutation);
+    printf("%s\n",sortie2);*/
 
 return 0;
 }
+
+
+
+/*
+**
+int main(int argc, char *argv[])
+{
+
+    char chaine[] = "Texte";
+    char* copie=NULL;
+
+    copie = copieur(chaine);
+
+
+    printf("chaine vaut : %s\n", chaine);
+    printf("copie vaut : %s\n", copie);
+     free(copie);
+ 
+    return 0;
+
+}
+
+char* copieur(const char *originale)
+{
+
+     char *copie=NULL;
+
+    copie=malloc((strlen(originale)+1)*sizeof(char));
+    strcpy(copie,originale);
+
+   return copie;
+}
+**
+**
+*/
