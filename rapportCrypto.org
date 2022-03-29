@@ -1,0 +1,36 @@
+#+TITLE: Rapport sécurité : crypter et décrypter
+#+HTML_HEAD: <link rel='stylesheet' type='text/css' href='style.css'/>
+
+Rapport de [[https://perso.isima.fr/~lelenglet][Léa Lenglet]] et [[https://perso.isima.fr/~mavillatte3][Mathilde Villatte]] | Prep'ISIMA \\
+[[./images/logos.jpeg]]
+
+* Introduction
+Ce travail consiste à mettre en évidence la facilité avec laquelle il est possible de
+casser une clé par substitution. Nous utiliserons l'alphabet 'A', 'B', 'C', ..., 'Z', ' '
+(caractère d'espacement). \\
+Notre travail devra comprendre les fonctions suivantes:
+- Une fonction *permutation*, qui génère une chaîne contenant une permutation aléatoire de
+l'alphabet
+- Une fonction *chiffrement*, qui saisit un message et une clef de chiffrement et renvoie 
+le message chiffré par substitution
+- Une fonction *déchiffrement*, qui prend un message chiffré ainsi que sa clef de 
+chiffrement et renvoie le message déchiffré
+- Une fonction *nettoyage*, qui prend un texte et le transforme afin qu'il ne comporte plus
+que les caractères de l'alphabet
+- Une fonction *fréquence*, qui reçoit un texte ne comprenant que des caractères de 
+l'alphabet et renvoie les fréquences d'apparition de chacun des caractères de l'alphabet 
+dans ce texte. On appelle cette sortie la 'table des fréquences' du fichier
+- Une fonction *décryptage*, qui prend en entrée un message chiffré et renvoie le message 
+original
+
+* Résolution
+** Méthodologie
+** Principe de la résolution
+** Code commenté
+#+BEGIN_SRC C 
+
+
+#+END_SRC 
+
+* Résultats obtenus
+
