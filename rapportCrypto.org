@@ -26,7 +26,6 @@ original
 * Résolution
 ** Méthodologie
 ** Principe de la résolution
-
 *** Permutation
 Nous commençons par la fonction /Permutation/, prenant comme argument un tableau de
 caractère *sortie*, nous permettant de générer une clef de chiffrement aléatoire à l'aide 
@@ -147,7 +146,107 @@ void Dechiffrement(char sortie[], char text[], char clef[]){
 
 #+END_SRC
 
+*** Nettoyage
+Nous créons une fonction /Changement_carac/, qui prend pour argument un caractère et qui 
+retourne la chaîne de caractère modifiée comme suit:
+- si le caractère est une lettre en minuscule ou accentuée, retourne la lettre en majuscule
+non accentuée
+- si le caractère est un caractère autre qu'une lettre ou un espace, retourne un point '.'
 
+#+NAME: changement_carac
+#+BEGIN_SRC C :results none
+char Changement_carac(char carac){
+    /* Retourne :
+     * '.' pour tous les éléments ne devant pas apparitre dans la chaine "propre"
+     * 'Majuscule' pour tous les éléments minuscules et accentuées
+     * ' ' pour tous les espaces */
+    char sortie='.'; // le cas ou il ne trouve pas des exceptions
+    if ((carac<'a' || carac>'z')&& (carac<'A' ||carac>'Z') && carac!=' '){
+        if (carac==-96){
+                sortie='A'; //remplacer à
+        }
+        else if (carac>=-88 && carac<=-85){
+            sortie='E'; //remplacer é è ê ë
+        }
+        else if (carac==-89){
+            sortie='C'; // remplacer ç
+        }
+        else if (carac==-71){ // remplacer ù
+            sortie='U';
+        }
+        else if (carac==-76){//remplacer ô
+            sortie='O';
+        }
+        else if (carac==':' || carac=='!' || carac=='?' || carac==',' || carac=='.' || carac=='\'' || carac=='-'){
+            sortie='.';
+        }}
+    else {
+        if(carac>='a' && carac<='z'){
+            sortie=carac+('A'-'a');
+        }
+        else {
+            sortie=carac;
+        }
+    }
+    return sortie;
+}
+#+END_SRC
+
+Notre fonction /nettoyage/ prend comme arguments un tableau de caractères *sortie*, que l'on
+va remplir à l'aide de notre tableau de caractères *text* nettoyé. \\
+Pour se faire, nous parcourons notre *text* jusqu'à parvenir à '\0', qui représente la fin
+de notre tableau. Nous faisons un appel à notre fonction /Changement_carac/ sur chaque
+caractère de notre tableau, et nous affectons à une variable temporaire *temp* le résultat.
+Nous remplissons notre tableau *sortie* comme suit : nous ajoutons la variable *temp* 
+seulement si elle est différente d'un point '.'. Ainsi nous nous retrouvons avec notre 
+texte ne contenant que les lettres de l'alphabet et les espaces.
+
+#+NAME: nettoyage
+#+BEGIN_SRC C :results none
+void  Nettoyage(char sortie[],char text[]){
+    int i=0 ,j=0;
+    char temp;
+    while (text[i]!='\0'){
+        temp=Changement_carac(text[i]);
+        if (temp!='.'){
+            sortie[j]=temp;
+            j++;
+        }
+        i++;
+    }
+    sortie[j]='\0'; //je rajoute '\0' pour éviter l'apparition de caractère non désiré
+}
+#+END_SRC
+
+*** Occurence
+Nous créons une fonction /occurence/, qui prend comme arguments un tableau de flottants
+ainsi qu'un tableau de caractères. \\
+Notre fonction parcours notre texte (qui doit être préalablement nettoyé), et qui, pour 
+chaque lettre, regarde l'indice de cette lettre dans l'alphabet grâce à notre fonction 
+/indice_in_alpha/, et ajoute 1 dans notre tableau d'entier à l'indice de la lettre, nous
+donnant le nombre d'apparition de cette lettre dans le texte. \\
+Nous parcourons notre tableau de flottans et divisons chaque nombre par le nombre total
+de lettre dans notre texte, et nous obtenons ainsi la fréquence d'appartion de chacune des
+lettres de notre texte.
+
+#+NAME: occurence
+#+BEGIN_SRC C :results none
+void occurence(float tab[],char text[]){
+    int i=0;
+    int nb_carac=1;
+    int indice;
+    while (text[i]!='\0'){
+        indice=indice_in_alpha(text[i]);
+
+        tab[indice]+=1;
+        nb_carac++;
+        i++;
+    }
+    for (i=0;i<N-1;i++){
+        tab[i]=tab[i]/nb_carac;
+    }
+}
+#+END_SRC
 ** Code commenté
 #+BEGIN_SRC C :export both :noweb yes :results output
 #include <stdio.h>
@@ -170,6 +269,8 @@ void Dechiffrement(char sortie[], char text[], char clef[]){
 
 <<dechiffrement>>
 
+//// FONCTION 4 : NETTOYAGE ////
+<<changement_carac>>
 
 #+END_SRC 
 
