@@ -26,8 +26,149 @@ original
 * Résolution
 ** Méthodologie
 ** Principe de la résolution
+
+*** Permutation
+Nous commençons par la fonction /Permutation/, prenant comme argument un tableau de
+caractère *sortie*, nous permettant de générer une clef de chiffrement aléatoire à l'aide 
+de l'alphabet, que nous stockerons dans ce tableauy. \\
+Pour cela, nous créons une variable *sortie*, dans laquelle nous copions notre alphabet. 
+Pour chaque lettre de notre alphabet, nous prenons un nombre aléatoire grâce à la fonction
+/random/, puis nous inversons le caractère à l'indice random et le caractère à l'indice i.
+Nous devons utiliser une variable temporaire *temp* dans laquelle nous stockons le 
+caractère à l'indice i, puis affectons le caractère à l'indice random à l'indice i. Nous 
+affectons pour finir le caractère *temp* à l'indice random.
+
+#+NAME: permutation
+#+BEGIN_SRC C :results none
+void Permutation(char sortie[]){
+    int i ; // compteur
+    int random;
+    char alphabet[N];
+    strcpy(alphabet,"ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
+    strcpy(sortie,alphabet);//alphabet de départ copié dans la sortie
+    char temp;
+
+    for (i=strlen(sortie)-2; i>1; i--){ // longueur-2 pour exclure la dernière case contenant '/0' de la permutation
+        random = rand () % i;
+        temp= sortie[i];
+        sortie[i]=sortie[random];
+        sortie[random]=temp;
+    }
+}
+#+END_SRC
+
+*** Chiffrement
+Afin de réaliser notre fonction /chiffrement/, nous créons une fonction /indice_in_alpha/,
+qui prend comme argument un caractère et renvoie son indice dans l'alphabet. \\
+
+#+NAME: indice_in_alpha
+#+BEGIN_SRC C :results none
+int indice_in_alpha(char carac){
+    int indice=0;
+    char alphabet[N];
+    strcpy(alphabet,"ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
+    while (alphabet[indice]!=carac){
+        indice++;
+    }
+    return indice;
+    //fonction permettant de trouver l'indice du carac dans l'alaphabet
+    //retourne indice
+}
+#+END_SRC
+
+Nous passons ensuite à la fonction /chiffrement/, qui prend comme arguments un tableau de
+caractère *sortie*, que nous allons remplir de notre texte, contenu dans un tableau de 
+caractère *text*, chiffré avec la clef contenue dans un tableau de caractère *clef*. \\
+Nous parcourons notre texte jusqu'à arriver à '\0', qui marque la fin de ce dernier. 
+Pour chaque caractère de notre texte, nous affectons à notre sortie le caractère chiffré
+correspondant. Nous retrouvons donc notre texte chiffré dans le tableau de caractère 
+*sortie*.
+
+#+NAME: chiffrement
+#+BEGIN_SRC C
+void Chiffrement(char sortie[], char text[], char clef[]){
+    int i =0;
+    int indice;
+    while (text[i]!='\0'){
+        indice=indice_in_alpha(text[i]);
+        sortie[i]=clef[indice];
+        i++;
+    }
+    sortie[i]='\0';
+    // on parcourt le texte avec une boucle tant que text[i]!='\0'
+    // on prends le caractère et on le remplace avec le caractère associé dans la clef de chiffrement
+    // le message chiffré est stocké par effet de bord dans la variable sortie
+}
+#+END_SRC
+
+*** Déchiffrement
+Comme pour notre fonction /chiffrement/, nous créons une fonction /indice_in_clef/ pour 
+notre fonction /dechiffrement/, qui prend comme argument un tableau de caractère contenant
+la clef de chiffrement, ainsi qu'un caractère, et qui retourne la position de ce caractère
+dans la clef.
+
+#+NAME: indice_in_clef
+#+BEGIN_SRC C :results none
+int indice_in_clef(char clef[],char carac){
+    int indice=0;
+    while (clef[indice]!=carac){
+        indice++;
+    }
+    return indice;
+    //fonction permettant de trouver l'indice du carac dans l'alaphabet
+    //retourne indice
+}
+#+END_SRC
+
+Nous passons donc à la fonction /edchiffrement/, qui prend comme arguments un tableau de
+caractère *sortie*, que nous allons remplir de notre texte, contenu dans un tableau de 
+caractère *text*, déchiffré avec la clef contenue dans un tableau de caractère *clef*. \\
+Nous affectons à une variable *alphabet* l'alphabet non permuté, puis nous parcourons 
+notre texte jusqu'à arriver à '\0', qui marque la fin de ce dernier. 
+Pour chaque caractère de notre texte, nous affectons à notre sortie le caractère déchiffré
+correspondant. Nous retrouvons donc notre texte déchiffré dans le tableau de caractère 
+*sortie*.
+
+#+NAME: dechiffrement
+#+BEGIN_SRC C :results none
+void Dechiffrement(char sortie[], char text[], char clef[]){
+    int i =0;
+    int indice;
+    char alphabet[N];
+    strcpy(alphabet,"ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
+
+    while (text[i]!='\0'){
+        indice=indice_in_clef(clef,text[i]);
+        sortie[i]=alphabet[indice];
+        i++;
+    }
+    sortie[i]='\0';
+}
+
+#+END_SRC
+
+
 ** Code commenté
-#+BEGIN_SRC C 
+#+BEGIN_SRC C :export both :noweb yes :results output
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define N 28 // longueur pour l'alphabet
+
+////// FONCTION 1 : PERMUTATION ////
+<<permutation>>
+
+////// FONCTION 2 : CHIFFREMENT ////
+<<indice_in_alpha>>
+
+<<chiffrement>>
+
+//// FONCTION 3 : DECHIFFREMENT ////
+<<indice_in_clef>>
+
+<<dechiffrement>>
 
 
 #+END_SRC 
