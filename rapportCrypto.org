@@ -167,8 +167,8 @@ char Changement_carac(char carac){
      * ' ' pour tous les espaces */
     char sortie='.'; // le cas ou il ne trouve pas des exceptions
     if ((carac<'a' || carac>'z')&& (carac<'A' ||carac>'Z') && carac!=' '){
-        if (carac==-96){
-                sortie='A'; //remplacer à
+        if (carac==-96 || carac==-94 || carac==-92 ){
+                sortie='A'; //remplacer à â ä
         }
         else if (carac>=-88 && carac<=-85){
             sortie='E'; //remplacer é è ê ë
@@ -176,11 +176,14 @@ char Changement_carac(char carac){
         else if (carac==-89){
             sortie='C'; // remplacer ç
         }
-        else if (carac==-71){ // remplacer ù
+        else if (carac==-71 || carac ==-69 || carac==-68){ // remplacer ù û ü
             sortie='U';
         }
-        else if (carac==-76){//remplacer ô
+        else if (carac==-76 || carac==-74){//remplacer ô ö
             sortie='O';
+        }
+        else if (carac==-82 || carac==-81){//remplacer î ï
+            sortie='I';
         }
         else if (carac==':' || carac=='!' || carac=='?' || carac==',' || carac=='.' || carac=='\'' || carac=='-'){
             sortie='.';
