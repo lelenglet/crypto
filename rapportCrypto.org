@@ -1,10 +1,13 @@
 #+TITLE: Rapport sécurité : crypter et décrypter
+#+OPTIONS: author:Lenglet Léa / Villatte Mathilde date:nil
 #+HTML_HEAD: <link rel='stylesheet' type='text/css' href='style.css'/>
 
 Rapport de [[https://perso.isima.fr/~lelenglet][Léa Lenglet]] et [[https://perso.isima.fr/~mavillatte3][Mathilde Villatte]] | Prep'ISIMA \\
-[[./images/logos.jpeg]]
+#+attr_html: :width 500px
+[[https://cdn.uca.fr/images/logos/ISIMA-logo-carre.png]]
 
 * Introduction
+
 Ce travail consiste à mettre en évidence la facilité avec laquelle il est possible de
 casser une clé par substitution. Nous utiliserons l'alphabet 'A', 'B', 'C', ..., 'Z', ' '
 (caractère d'espacement). \\
@@ -25,17 +28,21 @@ original
 
 * Résolution
 ** Méthodologie
+Afin d'organiser notre travail efficacement, nous avons répartis les tâches de la manière suivante :
++ Les 5 premières fonctions du projet ont été traité par Léa en 15 heures environ.
++ La dernière fonction décryptage est traitée par Mathilde qui s'est également occupée d'une grande partie du rapport en orgmode.
++ La partie test a été traité par Léa.
+
 ** Principe de la résolution
+Dans l'ensemble des fonctions de la solution proposée, nous passons en argument la sortie afin qu'elle soit modifiée par effet de bord. L'alphabet "ABCDEFGHIJKLMNOPQRSTUVWXYZ " est celui choisi par défaut, on prend donc la liberté de réaffecter manuellement la variable ~alphabet~ pour éviter la surcharge dans la signature de certaines fonctions.
 *** Permutation
-Nous commençons par la fonction /Permutation/, prenant comme argument un tableau de
-caractère *sortie*, nous permettant de générer une clef de chiffrement aléatoire à l'aide 
-de l'alphabet, que nous stockerons dans ce tableauy. \\
-Pour cela, nous créons une variable *sortie*, dans laquelle nous copions notre alphabet. 
+Nous commençons par implémenter la fonction /Permutation/, prenant comme argument un tableau de
+caractère ~sortie~, nous permettant de générer une clef de chiffrement aléatoire à l'aide
+de l'alphabet, que nous stockerons dans ce tableau. \\
+Pour cela, nous copions notre alphabet dans le tableau ~sortie~.
 Pour chaque lettre de notre alphabet, nous prenons un nombre aléatoire grâce à la fonction
-/random/, puis nous inversons le caractère à l'indice random et le caractère à l'indice i.
-Nous devons utiliser une variable temporaire *temp* dans laquelle nous stockons le 
-caractère à l'indice i, puis affectons le caractère à l'indice random à l'indice i. Nous 
-affectons pour finir le caractère *temp* à l'indice random.
+/random/ et à la commande ~srand(time(NULL))~ dans le main de notre programme, puis nous inversons le caractère à l'indice random et le caractère à l'indice i.
+Nous devons utiliser une variable temporaire *temp* afin de pouvoir stocker les différentes valeurs du tableau sans perte de données durant la permutation des valeurs.
 
 #+NAME: permutation
 #+BEGIN_SRC C :results none
@@ -57,7 +64,7 @@ void Permutation(char sortie[]){
 #+END_SRC
 
 *** Chiffrement
-Afin de réaliser notre fonction /chiffrement/, nous créons une fonction /indice_in_alpha/,
+Afin de réaliser notre fonction /chiffrement/, nous créons une fonction ~indice_in_alpha~,
 qui prend comme argument un caractère et renvoie son indice dans l'alphabet. \\
 
 #+NAME: indice_in_alpha
@@ -75,13 +82,11 @@ int indice_in_alpha(char carac){
 }
 #+END_SRC
 
-Nous passons ensuite à la fonction /chiffrement/, qui prend comme arguments un tableau de
-caractère *sortie*, que nous allons remplir de notre texte, contenu dans un tableau de 
-caractère *text*, chiffré avec la clef contenue dans un tableau de caractère *clef*. \\
+La fonction /chiffrement/ ,quant à elle , prend comme arguments un tableau de
+caractère ~sortie~, que nous allons remplir à partir de notre texte, contenu dans un tableau de
+caractère ~text~, chiffré avec la clef contenue dans un tableau de caractère ~clef~. \\
 Nous parcourons notre texte jusqu'à arriver à '\0', qui marque la fin de ce dernier. 
-Pour chaque caractère de notre texte, nous affectons à notre sortie le caractère chiffré
-correspondant. Nous retrouvons donc notre texte chiffré dans le tableau de caractère 
-*sortie*.
+Pour chaque caractère de notre texte, nous affectons à notre sortie le caractère chiffré avec ~indice_in_alpha~.
 
 #+NAME: chiffrement
 #+BEGIN_SRC C
@@ -101,7 +106,7 @@ void Chiffrement(char sortie[], char text[], char clef[]){
 #+END_SRC
 
 *** Déchiffrement
-Comme pour notre fonction /chiffrement/, nous créons une fonction /indice_in_clef/ pour 
+Comme pour notre fonction /chiffrement/, nous créons une fonction ~indice_in_clef~ pour
 notre fonction /dechiffrement/, qui prend comme argument un tableau de caractère contenant
 la clef de chiffrement, ainsi qu'un caractère, et qui retourne la position de ce caractère
 dans la clef.
@@ -119,14 +124,14 @@ int indice_in_clef(char clef[],char carac){
 }
 #+END_SRC
 
-Nous passons donc à la fonction /edchiffrement/, qui prend comme arguments un tableau de
-caractère *sortie*, que nous allons remplir de notre texte, contenu dans un tableau de 
-caractère *text*, déchiffré avec la clef contenue dans un tableau de caractère *clef*. \\
-Nous affectons à une variable *alphabet* l'alphabet non permuté, puis nous parcourons 
+La fonction /dechiffrement/, qui prend comme arguments un tableau de
+caractère ~sortie~, que nous allons remplir avec notre texte, contenu dans un tableau de
+caractère ~text~, déchiffré avec la clef contenue dans un tableau de caractère ~clef~. \\
+Nous affectons à une variable ~alphabet~ l'alphabet non permuté, puis nous parcourons
 notre texte jusqu'à arriver à '\0', qui marque la fin de ce dernier. 
 Pour chaque caractère de notre texte, nous affectons à notre sortie le caractère déchiffré
 correspondant. Nous retrouvons donc notre texte déchiffré dans le tableau de caractère 
-*sortie*.
+~sortie~.
 
 #+NAME: dechiffrement
 #+BEGIN_SRC C :results none
@@ -147,11 +152,11 @@ void Dechiffrement(char sortie[], char text[], char clef[]){
 #+END_SRC
 
 *** Nettoyage
-Nous créons une fonction /Changement_carac/, qui prend pour argument un caractère et qui 
-retourne la chaîne de caractère modifiée comme suit:
+Nous créons une fonction ~Changement_carac~, qui prend pour argument un caractère et qui
+retourne le caractère modifié comme suit:
 - si le caractère est une lettre en minuscule ou accentuée, retourne la lettre en majuscule
-non accentuée
-- si le caractère est un caractère autre qu'une lettre ou un espace, retourne un point '.'
+non accentuée.
+- si le caractère est un caractère autre qu'une lettre ou un espace, retourne un point '.'.
 
 #+NAME: changement_carac
 #+BEGIN_SRC C :results none
@@ -192,13 +197,13 @@ char Changement_carac(char carac){
 }
 #+END_SRC
 
-Notre fonction /nettoyage/ prend comme arguments un tableau de caractères *sortie*, que l'on
-va remplir à l'aide de notre tableau de caractères *text* nettoyé. \\
-Pour se faire, nous parcourons notre *text* jusqu'à parvenir à '\0', qui représente la fin
-de notre tableau. Nous faisons un appel à notre fonction /Changement_carac/ sur chaque
-caractère de notre tableau, et nous affectons à une variable temporaire *temp* le résultat.
-Nous remplissons notre tableau *sortie* comme suit : nous ajoutons la variable *temp* 
-seulement si elle est différente d'un point '.'. Ainsi nous nous retrouvons avec notre 
+Notre fonction /nettoyage/ prend comme arguments un tableau de caractères ~sortie~, que l'on
+va remplir à l'aide de notre tableau de caractères ~text~ nettoyé. \\
+Pour se faire, nous parcourons notre chaine ~text~ jusqu'à parvenir à '\0'.
+Nous faisons un appel à notre fonction ~Changement_carac~ pour chaque
+caractère de notre tableau, et nous affectons à une variable temporaire ~temp~ le résultat.
+Nous remplissons notre tableau ~sortie~ comme suit : nous ajoutons la variable ~temp~
+seulement si elle est différente du caractère '.'. Ainsi nous nous retrouvons avec notre
 texte ne contenant que les lettres de l'alphabet et les espaces.
 
 #+NAME: nettoyage
@@ -217,6 +222,12 @@ void  Nettoyage(char sortie[],char text[]){
     sortie[j]='\0'; //je rajoute '\0' pour éviter l'apparition de caractère non désiré
 }
 #+END_SRC
+
+Problème survenu lors de l’implémentation:
+
+Les caractères accentués sont représentés par deux caractères dans une chaine au lieu d'un seul.
+Lors de plusieurs tests sur différents caractères de ce type, nous nous sommes rendus compte que la valeur du premier caractère est le même pour tous les caractères accentués tandis que le second caractère est représenté par un entier négatif distinct. Pour empêcher l'ajout d'un caractère supplémentaire indésirable dans la chaine de sortie nous avons décider de choisir le caractère '.' comme valeur à ignorer.
+
 
 *** Occurence
 Nous créons une fonction /occurence/, qui prend comme arguments un tableau de flottants
@@ -247,6 +258,8 @@ void occurence(float tab[],char text[]){
     }
 }
 #+END_SRC
+
+
 ** Code commenté
 #+BEGIN_SRC C :export both :noweb yes :results output
 #include <stdio.h>
