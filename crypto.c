@@ -168,26 +168,32 @@ void occurence(float tab[],char text[]){
 /* Fréquences d'apparition des lettres par ordre décroissant de fréquence:
 "EASINTRLUODCPMVGFBQHXJYZKW"*/
 
-void tri_ordre_desc(float tab[], char app_txt[]){
-  int i = 0, j = 0;
-  int max, indice_max;
-  char alphabet[N-1];
-  strcpy(alphabet, "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+void tri_ordre_desc(float occ[], char app_txt[]){
+  int i = 0, j;
+  float max_occ;
+  int indice_max;
+  char alphabet[N];
+  strcpy(alphabet, "ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
+  printf("----- tri_ordre_desc -----\n");
 
-  while (tab[i] != '\0'){
-    max = tab[i];
+  while (occ[i+1] != '\0'){
+    max_occ = occ[i];
     indice_max = i;
-    j = i;
-    while (tab[j] != '\0'){
-      if (tab[j] > max){
-	max = tab[j];
+    j = 0;
+    while (occ[j+1] != '\0'){
+      if (occ[j] > max_occ){
+	max_occ = occ[j];
 	indice_max = j;
       }
       j++;
     }
+    occ[indice_max] = -1;
     app_txt[i] = alphabet[indice_max];
+    printf("%c", app_txt[i]);
     i++;
   }
+  app_txt[i+1] = ' ';
+  printf("\n");
 }
 
 void clef_freq(char app_txt[], char clef[]){
@@ -198,7 +204,10 @@ void clef_freq(char app_txt[], char clef[]){
 
   while (app_fr[i] != '\0'){
     indice = indice_in_alpha(app_fr[i]);
+    //printf("lettre %c\n", app_fr[i]);
+    //printf("indice %d\n", indice);
     clef[indice] = app_txt[i];
+    //printf("clef %c\n",  clef[indice]);
     i++;
   }
   printf("----CLEF----\n");
@@ -224,12 +233,12 @@ void Decryptage(char sortie[], char text[]){
 
 int main(){
     srand(time(NULL));
-    int i;
+    //int i;
 
     //permutation
     char permutation[N];
     Permutation(permutation);
-    printf("------- CLEF DE PERMUTATION -------");
+    printf("------- CLEF DE PERMUTATION -------\n");
     printf("%s\n",permutation);
 
     //nettoyage
@@ -243,18 +252,18 @@ int main(){
     //ocurrence
     float table_des_frequences[N]={0};
     occurence(table_des_frequences,texte_propre);
-    printf("------- TABLE DES FREQUENCES --------\n");
-    for (i=0;i<N;i++){
-      printf("%f | ",table_des_frequences[i]);
-    }
-    printf("\n");
+    // printf("------- TABLE DES FREQUENCES --------\n");
+    //for (i=0;i<N;i++){
+    //printf("%f | ",table_des_frequences[i]);
+    //}
+    //printf("\n");
     
     //chiffrement
     char sortie_chiffree[strlen(texte_propre)];
     Chiffrement(sortie_chiffree,texte_propre,permutation);
-    printf("------- TEXTE CHIFFREE -------\n");
-    printf("%s\n",sortie_chiffree);
-    printf("------- FIN ------\n");
+    // printf("------- TEXTE CHIFFREE -------\n");
+    //printf("%s\n",sortie_chiffree);
+    //printf("------- FIN ------\n");
     
     //dechiffrement
     /* char sortie_dechiffree[strlen(texte_propre)];
