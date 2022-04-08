@@ -16,7 +16,7 @@ void Permutation(char sortie[]){
     strcpy(sortie,alphabet);//alphabet de départ copié dans la sortie
     char temp;
 
-    for (i=strlen(sortie)-2; i>1; i--){ // longueur-2 pour exclure la dernière case contenant '/0' de la permutation
+    for (i=strlen(sortie)-1; i>1; i--){ // longueur-2 pour exclure la dernière case contenant '/0' de la permutation
         random = rand () % i;
         temp= sortie[i];
         sortie[i]=sortie[random];
@@ -254,10 +254,10 @@ int main(){
     /* printf("%s\n",texte_propre);*/
     
     //ocurrence
-    //float table_des_frequences[N]={0};
+    //float table_des_frequences[N-1]={0};
     //occurence(table_des_frequences,texte_propre);
     // printf("------- TABLE DES FREQUENCES --------\n");
-    //for (i=0;i<N;i++){
+    //for (i=0;i<N-1;i++){
     //printf("%f | ",table_des_frequences[i]);
     //}
     //printf("\n");
