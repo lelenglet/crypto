@@ -151,6 +151,7 @@ void occurence(float tab[],char text[]){
     int i=0;
     int nb_carac=1;
     int indice;
+    printf("---Occ---\n");
     while (text[i]!='\0'){
         indice=indice_in_alpha(text[i]);
 
@@ -160,7 +161,9 @@ void occurence(float tab[],char text[]){
     }
     for (i=0;i<N-1;i++){
         tab[i]=tab[i]/nb_carac;
+	printf("|%f", tab[i]);
     }
+    printf("|\n");
 }
 
 //////////////////// FONCTION 6 : DECRYPTAGE //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,9 +180,9 @@ void tri_ordre_desc(float occ[], char app_txt[]){
   printf("----- tri_ordre_desc -----\n");
 
   while (occ[i+1] != '\0'){
-    max_occ = occ[i];
-    indice_max = i;
-    j = 0;
+    max_occ = occ[0];
+    indice_max = 0;
+    j = 1;
     while (occ[j+1] != '\0'){
       if (occ[j] > max_occ){
 	max_occ = occ[j];
@@ -192,7 +195,8 @@ void tri_ordre_desc(float occ[], char app_txt[]){
     printf("%c", app_txt[i]);
     i++;
   }
-  app_txt[i+1] = ' ';
+  app_txt[i] = ' ';
+  app_txt[i+1] = '\0';
   printf("\n");
 }
 
@@ -215,9 +219,9 @@ void clef_freq(char app_txt[], char clef[]){
 }
 
 void Decryptage(char sortie[], char text[]){
-  float freq[N-1];
-  char app_txt[N-1];
-  char clef[N-1];
+  float freq[N];
+  char app_txt[N];
+  char clef[N];
 
   occurence(freq, text);
   tri_ordre_desc(freq, app_txt);
@@ -250,8 +254,8 @@ int main(){
     /* printf("%s\n",texte_propre);*/
     
     //ocurrence
-    float table_des_frequences[N]={0};
-    occurence(table_des_frequences,texte_propre);
+    //float table_des_frequences[N]={0};
+    //occurence(table_des_frequences,texte_propre);
     // printf("------- TABLE DES FREQUENCES --------\n");
     //for (i=0;i<N;i++){
     //printf("%f | ",table_des_frequences[i]);
@@ -271,11 +275,17 @@ int main(){
     printf("%s\n",sortie_dechiffree);*/
 
     //decryptage
-    char sortie_dechiffree[strlen(texte_propre)];
-    Decryptage(sortie_dechiffree, sortie_chiffree);
-    printf("------- TEXTE DECHIFFREE -------\n");
-    printf("%s\n",sortie_dechiffree);
-    printf("------- FIN -------\n");
+    // char sortie_dechiffree[strlen(texte_propre)];
+    // Decryptage(sortie_dechiffree, sortie_chiffree);
+    //printf("------- TEXTE DECHIFFREE -------\n");
+    //printf("%s\n",sortie_dechiffree);
+    //printf("------- FIN -------\n");
+
+    float occ[N] = {0};
+    char app_txt[N];
+    
+    occurence(occ, sortie_chiffree);
+    tri_ordre_desc(occ, app_txt);
     
     return 0;
 }
