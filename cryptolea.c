@@ -159,7 +159,7 @@ void occurence(float tab[],char text[]){
         i++;
     }
     for (i=0;i<N-1;i++){
-        tab[i]=tab[i]/nb_carac;
+        tab[i]=(tab[i]/nb_carac) * 100;
     }
 }
 
@@ -255,7 +255,7 @@ int main(){
     srand(time(NULL));
     int i;
     char alphabet[N];
-  strcpy(alphabet, "ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
+    strcpy(alphabet, "ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
     //permutation
     char permutation[N];
     Permutation(permutation);
