@@ -218,9 +218,9 @@ void clef_freq(char app_txt[], char clef[]){
   int i=0;
   int indice;
   char app_fr[N];
-  //strcpy(app_fr, " EASINTRLUODCMPVGFBQHXJYZKW" );
+  strcpy(app_fr, " EASINTRLUODCMPVGFBQHXJYZKW" );
   //strcpy(app_fr," EASITNRUOLDCMPVQFBGHJXZYKW");
-  strcpy(app_fr," EASINUTROLDMCPVQHFJBGXYZKW");
+  //strcpy(app_fr," EASINUTROLDMCPVQHFJBGXYZKW");
   while (app_fr[i] != '\0'){
     indice = indice_in_alpha(app_fr[i]);
     //printf("lettre %c\n", app_fr[i]);
@@ -264,7 +264,6 @@ int main(){
 
     //nettoyage
     char text[]="Peut-être l’immobilité des choses autour de nous leur est-elle imposée par notre certitude que ce sont elles et non pas d’autres, par l’immobilité de notre pensée en face d’elles. Toujours est-il que, quand je me réveillais ainsi, mon esprit s’agitant pour chercher, sans y réussir, à savoir où j’étais, tout tournait autour de moi dans l’obscurité, les choses, les pays, les années. Mon corps, trop engourdi pour remuer, cherchait, d’après la forme de sa fatigue, à repérer la position de ses membres pour en induire la direction du mur, la place des meubles, pour reconstruire et pour nommer la demeure où il se trouvait. Sa mémoire, la mémoire de ses côtes, de ses genoux, de ses épaules, lui présentait successivement plusieurs des chambres où il avait dormi, tandis qu’autour de lui les murs invisibles, changeant de place selon la forme de la pièce imaginée, tourbillonnaient dans les ténèbres. Et avant même que ma pensée, qui hésitait au seuil des temps et des formes, eût identifié le logis en rapprochant les circonstances, lui, – mon corps, – se rappelait pour chacun le genre du lit, la place des portes, la prise de jour des fenêtres, l’existence d’un couloir, avec la pensée que j’avais en m’y endormant et que je retrouvais au réveil. Mon côté ankylosé, cherchant à deviner son orientation, s’imaginait, par exemple, allongé face au mur dans un grand lit à baldaquin et aussitôt je me disais : Tiens, j’ai fini par m’endormir quoique maman ne soit pas venue me dire bonsoir , j’étais à la campagne chez mon grand-père";
-    scanf("%s",text);
     /*printf("%s\n",text);*/
     char texte_propre[strlen(text)];
     Nettoyage(texte_propre,text);
