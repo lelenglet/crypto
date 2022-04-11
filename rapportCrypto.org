@@ -265,7 +265,19 @@ void occurence(float tab[],char text[]){
 #+END_SRC
 
 *** Décryptage
-#+NAME: decryptage
+Nous créons une fonction /tri_ordre_desc/, qui prend comme argument un tableau de flottant 
+contenant les occurences, ainsi qu'un tableau de caractère que nous allons remplir comme 
+effet de bord. \\
+Cette fonction va remplir le tableau de caractères *app_txt* avec les lettres de l'alphabet
+par ordre décroissant d'occurence. Pour se faire, on parcours notre tableau *N* fois, et
+on cherche la plus grande occurence à chaque fois. Une fois trouvée, on la stocke dans une 
+variable *max_occ*, ainsi que l'indice *indice_max* de cette occurence. \\
+On passe l'occurence à l'indice *indice_max* à -1, afin de ne plus la prendre en compte 
+lors de nos prochaines exploration du tableau. On ajoute à la suite de notre tableau 
+*app_txt* la lettre de l'alphabet à *indice_max*. On se retrouve à la fin avec notre 
+tableau de caractères classés par ordre décroissant d'occurences.
+
+#+NAME: tri_ordre_desc
 #+BEGIN_SRC C :results none
 void tri_ordre_desc(float occ[], char app_txt[]){
   int i = 0, j;
@@ -291,7 +303,23 @@ void tri_ordre_desc(float occ[], char app_txt[]){
  app_txt[i+1] = ' ';
  printf("\n\n");
 }
+#+END_SRC
 
+Nous créons ensuite une fonction /clef_freq/, qui prend comme argument un tableau de 
+caractères *app_txt*, qui est le tableau de caractères classés par ordre décroissant 
+d'occurence obtenu grâce à notre fonction /tri_ordre_desc/ définie ci-dessus, ainsi qu'un 
+second tableau de caractères *clef* dans lequel nous allons stocker notre clef afin de 
+pouvoir décrypter notre texte grâce à la fonction /dechiffrement/. \\
+On initialise une variable *app_fr* dans laquelle nous allons stocker l'alphabet dans
+l'ordre décroissant d'occurence dans la langue française. Nous allons ensuite remplir notre
+clef de la façon suivante : on parcours *app_txt*, et pour chaque lettre de *app_txt*, on
+prend son indice dans l'alphabet et on affecte à *clef[indice]* la lettre au même indice 
+que *app_txt*. Cela nous donne la clef de chiffrement (plus ou moins fiable en fonction de
+la table d'occurences et donc de la taille du texte), dont nous allons nous servir pour 
+décrypter notre texte.
+
+#+NAME: clef_freq
+#+BEGIN_SRC C :results none
 void clef_freq(char app_txt[], char clef[]){
   int i=0;
   int indice;
@@ -306,7 +334,10 @@ void clef_freq(char app_txt[], char clef[]){
   printf("----CLEF----\n");
   printf("%s\n\n", clef);
 }
+#+END_SRC
 
+#+NAME: decryptage
+#+BEGIN_SRC C :results none
 void Decryptage(char sortie[], char text[]){
   float freq[N-1];
   char app_txt[N];
@@ -345,6 +376,7 @@ void Decryptage(char sortie[], char text[]){
 
 //// FONCTION 4 : NETTOYAGE ////
 <<changement_carac>>
+
 <<nettoyage>>
 
 //// FONCTION 5 : OCCURENCE ////
@@ -352,6 +384,10 @@ void Decryptage(char sortie[], char text[]){
 
 
 //////////////////// FONCTION 6 : DECRYPTAGE //////////////////////////////////////////////////////////////////////////////////////////////////////
+<<tri_ordre_desc>>
+
+<<clef_freq>>
+
 <<decryptage>>
 
 int main(){
