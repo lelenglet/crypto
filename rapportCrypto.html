@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-04-06 mer. 12:37 -->
+<!-- 2022-04-11 lun. 07:41 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Rapport sécurité : crypter et décrypter</title>
@@ -202,23 +202,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9dc2947">1. Introduction</a></li>
-<li><a href="#org5f0a2ff">2. Résolution</a>
+<li><a href="#orgaaaf65d">1. Introduction</a></li>
+<li><a href="#org13074bf">2. Résolution</a>
 <ul>
-<li><a href="#orgf61eef4">2.1. Méthodologie</a></li>
-<li><a href="#orgf2504f9">2.2. Principe de la résolution</a>
+<li><a href="#orgc83dfc0">2.1. Méthodologie</a></li>
+<li><a href="#org23ba854">2.2. Principe de la résolution</a>
 <ul>
-<li><a href="#orgf5f7314">2.2.1. Permutation</a></li>
-<li><a href="#org02e1708">2.2.2. Chiffrement</a></li>
-<li><a href="#org47d004a">2.2.3. Déchiffrement</a></li>
-<li><a href="#org9b811c0">2.2.4. Nettoyage</a></li>
-<li><a href="#orgc33dc2d">2.2.5. Occurence</a></li>
+<li><a href="#org85ea023">2.2.1. Permutation</a></li>
+<li><a href="#org5b73a1f">2.2.2. Chiffrement</a></li>
+<li><a href="#org325086a">2.2.3. Déchiffrement</a></li>
+<li><a href="#orgf047d12">2.2.4. Nettoyage</a></li>
+<li><a href="#org591f552">2.2.5. Occurence</a></li>
 </ul>
 </li>
-<li><a href="#orgc53e23e">2.3. Code commenté</a></li>
+<li><a href="#org157bac8">2.3. Code commenté</a></li>
 </ul>
 </li>
-<li><a href="#orge6d2bdb">3. Résultats obtenus</a></li>
+<li><a href="#orgdfe1624">3. Résultats obtenus</a></li>
 </ul>
 </div>
 </div>
@@ -226,13 +226,13 @@
 Rapport de <a href="https://perso.isima.fr/~lelenglet">Léa Lenglet</a> et <a href="https://perso.isima.fr/~mavillatte3">Mathilde Villatte</a> | Prep&rsquo;ISIMA <br />
 </p>
 
-<div id="orga6b7e4d" class="figure">
+<div id="org3e7703e" class="figure">
 <p><img src="https://cdn.uca.fr/images/logos/ISIMA-logo-carre.png" alt="ISIMA-logo-carre.png" width="500px" />
 </p>
 </div>
 
-<div id="outline-container-org9dc2947" class="outline-2">
-<h2 id="org9dc2947"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-orgaaaf65d" class="outline-2">
+<h2 id="orgaaaf65d"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Ce travail consiste à mettre en évidence la facilité avec laquelle il est possible de
@@ -277,15 +277,22 @@ dans ce texte. On appelle cette sortie la &rsquo;table des fréquences&rsquo; du
 <p>
 original
 </p>
+
+
+<div id="orgff81c45" class="figure">
+<p><img src="https://www.frenchweb.fr/wp-content/uploads/2016/09/code-secret.jpg" alt="code-secret.jpg" width="350px" />
+</p>
+</div>
 </div>
 </div>
 
-<div id="outline-container-org5f0a2ff" class="outline-2">
-<h2 id="org5f0a2ff"><span class="section-number-2">2.</span> Résolution</h2>
+
+<div id="outline-container-org13074bf" class="outline-2">
+<h2 id="org13074bf"><span class="section-number-2">2.</span> Résolution</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgf61eef4" class="outline-3">
-<h3 id="orgf61eef4"><span class="section-number-3">2.1.</span> Méthodologie</h3>
+<div id="outline-container-orgc83dfc0" class="outline-3">
+<h3 id="orgc83dfc0"><span class="section-number-3">2.1.</span> Méthodologie</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Afin d&rsquo;organiser notre travail efficacement, nous avons répartis les tâches de la manière suivante :
@@ -298,15 +305,15 @@ Afin d&rsquo;organiser notre travail efficacement, nous avons répartis les tâc
 </div>
 </div>
 
-<div id="outline-container-orgf2504f9" class="outline-3">
-<h3 id="orgf2504f9"><span class="section-number-3">2.2.</span> Principe de la résolution</h3>
+<div id="outline-container-org23ba854" class="outline-3">
+<h3 id="org23ba854"><span class="section-number-3">2.2.</span> Principe de la résolution</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Dans l&rsquo;ensemble des fonctions de la solution proposée, nous passons en argument la sortie afin qu&rsquo;elle soit modifiée par effet de bord. L&rsquo;alphabet &ldquo;ABCDEFGHIJKLMNOPQRSTUVWXYZ &rdquo; est celui choisi par défaut, on prend donc la liberté de réaffecter manuellement la variable <code>alphabet</code> pour éviter la surcharge dans la signature de certaines fonctions.
 </p>
 </div>
-<div id="outline-container-orgf5f7314" class="outline-4">
-<h4 id="orgf5f7314"><span class="section-number-4">2.2.1.</span> Permutation</h4>
+<div id="outline-container-org85ea023" class="outline-4">
+<h4 id="org85ea023"><span class="section-number-4">2.2.1.</span> Permutation</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 Nous commençons par implémenter la fonction <i>Permutation</i>, prenant comme argument un tableau de
@@ -319,7 +326,7 @@ Nous devons utiliser une variable temporaire <b>temp</b> afin de pouvoir stocker
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org22ea98c"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Permutation</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org68b476f"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Permutation</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> ; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">compteur</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">random</span>;
     <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">alphabet</span><span style="color: #c678dd;">[</span>N<span style="color: #c678dd;">]</span>;
@@ -339,8 +346,8 @@ Nous devons utiliser une variable temporaire <b>temp</b> afin de pouvoir stocker
 </div>
 </div>
 
-<div id="outline-container-org02e1708" class="outline-4">
-<h4 id="org02e1708"><span class="section-number-4">2.2.2.</span> Chiffrement</h4>
+<div id="outline-container-org5b73a1f" class="outline-4">
+<h4 id="org5b73a1f"><span class="section-number-4">2.2.2.</span> Chiffrement</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
 Afin de réaliser notre fonction <i>chiffrement</i>, nous créons une fonction <code>indice_in_alpha</code>,
@@ -348,7 +355,7 @@ qui prend comme argument un caractère et renvoie son indice dans l&rsquo;alphab
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org2a4ac77"><span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">indice_in_alpha</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org65e2def"><span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">indice_in_alpha</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>=<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">alphabet</span><span style="color: #c678dd;">[</span>N<span style="color: #c678dd;">]</span>;
     strcpy<span style="color: #c678dd;">(</span>alphabet,<span style="color: #98be65;">"ABCDEFGHIJKLMNOPQRSTUVWXYZ "</span><span style="color: #c678dd;">)</span>;
@@ -371,7 +378,7 @@ Pour chaque caractère de notre texte, nous affectons à notre sortie le caract�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org12a064e"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Chiffrement</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org2ba2f2d"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Chiffrement</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> =<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>;
     <span style="color: #51afef;">while</span> <span style="color: #c678dd;">(</span>text<span style="color: #98be65;">[</span>i<span style="color: #98be65;">]</span>!=<span style="color: #98be65;">'\0'</span><span style="color: #c678dd;">){</span>
@@ -389,8 +396,8 @@ Pour chaque caractère de notre texte, nous affectons à notre sortie le caract�
 </div>
 </div>
 
-<div id="outline-container-org47d004a" class="outline-4">
-<h4 id="org47d004a"><span class="section-number-4">2.2.3.</span> Déchiffrement</h4>
+<div id="outline-container-org325086a" class="outline-4">
+<h4 id="org325086a"><span class="section-number-4">2.2.3.</span> Déchiffrement</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <p>
 Comme pour notre fonction <i>chiffrement</i>, nous créons une fonction <code>indice_in_clef</code> pour
@@ -400,7 +407,7 @@ dans la clef.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org4315df7"><span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">indice_in_clef</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="orge9c39dd"><span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">indice_in_clef</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>=<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #51afef;">while</span> <span style="color: #c678dd;">(</span>clef<span style="color: #98be65;">[</span>indice<span style="color: #98be65;">]</span>!=carac<span style="color: #c678dd;">){</span>
         indice++;
@@ -424,7 +431,7 @@ correspondant. Nous retrouvons donc notre texte déchiffré dans le tableau de c
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="orga350c6a"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Dechiffrement</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org6799b31"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Dechiffrement</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> =<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>;
     <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">alphabet</span><span style="color: #c678dd;">[</span>N<span style="color: #c678dd;">]</span>;
@@ -443,8 +450,8 @@ correspondant. Nous retrouvons donc notre texte déchiffré dans le tableau de c
 </div>
 </div>
 
-<div id="outline-container-org9b811c0" class="outline-4">
-<h4 id="org9b811c0"><span class="section-number-4">2.2.4.</span> Nettoyage</h4>
+<div id="outline-container-orgf047d12" class="outline-4">
+<h4 id="orgf047d12"><span class="section-number-4">2.2.4.</span> Nettoyage</h4>
 <div class="outline-text-4" id="text-2-2-4">
 <p>
 Nous créons une fonction <code>Changement_carac</code>, qui prend pour argument un caractère et qui
@@ -461,7 +468,7 @@ non accentuée.
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org2181010"><span style="color: #ECBE7B;">char</span> <span style="color: #c678dd;">Changement_carac</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org6ec4b6e"><span style="color: #ECBE7B;">char</span> <span style="color: #c678dd;">Changement_carac</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
     <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">Retourne :</span>
 <span style="color: #5B6268;">     * '.' pour tous les &#233;l&#233;ments ne devant pas apparitre dans la chaine "propre"</span>
 <span style="color: #5B6268;">     * 'Majuscule' pour tous les &#233;l&#233;ments minuscules et accentu&#233;es</span>
@@ -514,7 +521,7 @@ texte ne contenant que les lettres de l&rsquo;alphabet et les espaces.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="orgde83a9e"><span style="color: #ECBE7B;">void</span>  <span style="color: #c678dd;">Nettoyage</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org9751f64"><span style="color: #ECBE7B;">void</span>  <span style="color: #c678dd;">Nettoyage</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span>=<span style="color: #da8548; font-weight: bold;">0</span> ,<span style="color: #dcaeea;">j</span>=<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">temp</span>;
     <span style="color: #51afef;">while</span> <span style="color: #c678dd;">(</span>text<span style="color: #98be65;">[</span>i<span style="color: #98be65;">]</span>!=<span style="color: #98be65;">'\0'</span><span style="color: #c678dd;">){</span>
@@ -542,8 +549,8 @@ Lors de plusieurs tests sur différents caractères de ce type, nous nous sommes
 </div>
 
 
-<div id="outline-container-orgc33dc2d" class="outline-4">
-<h4 id="orgc33dc2d"><span class="section-number-4">2.2.5.</span> Occurence</h4>
+<div id="outline-container-org591f552" class="outline-4">
+<h4 id="org591f552"><span class="section-number-4">2.2.5.</span> Occurence</h4>
 <div class="outline-text-4" id="text-2-2-5">
 <p>
 Nous créons une fonction <i>occurence</i>, qui prend comme arguments un tableau de flottants
@@ -558,7 +565,7 @@ lettres de notre texte.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org395e846"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">occurence</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">tab</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org0fcba7c"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">occurence</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">tab</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span>=<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">nb_carac</span>=<span style="color: #da8548; font-weight: bold;">1</span>;
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>;
@@ -580,8 +587,8 @@ lettres de notre texte.
 </div>
 
 
-<div id="outline-container-orgc53e23e" class="outline-3">
-<h3 id="orgc53e23e"><span class="section-number-3">2.3.</span> Code commenté</h3>
+<div id="outline-container-org157bac8" class="outline-3">
+<h3 id="org157bac8"><span class="section-number-3">2.3.</span> Code commenté</h3>
 <div class="outline-text-3" id="text-2-3">
 <div class="org-src-container">
 <pre class="src src-C"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">stdio.h</span><span style="color: #51afef;">&gt;</span>
@@ -707,13 +714,13 @@ lettres de notre texte.
 </div>
 </div>
 
-<div id="outline-container-orge6d2bdb" class="outline-2">
-<h2 id="orge6d2bdb"><span class="section-number-2">3.</span> Résultats obtenus</h2>
+<div id="outline-container-orgdfe1624" class="outline-2">
+<h2 id="orgdfe1624"><span class="section-number-2">3.</span> Résultats obtenus</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Léa Lenglet</p>
-<p class="date">Created: 2022-04-06 mer. 12:37</p>
+<p class="date">Created: 2022-04-11 lun. 07:41</p>
 </div>
 </body>
 </html>
