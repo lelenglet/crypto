@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-04-11 lun. 17:28 -->
+<!-- 2022-04-12 mar. 07:16 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Rapport sécurité : crypter et décrypter</title>
@@ -202,24 +202,24 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5e1bf92">1. Introduction</a></li>
-<li><a href="#org4b95974">2. Résolution</a>
+<li><a href="#org1be91ec">1. Introduction</a></li>
+<li><a href="#orga83b4ac">2. Résolution</a>
 <ul>
-<li><a href="#orgea88798">2.1. Méthodologie</a></li>
-<li><a href="#org57cfe63">2.2. Principe de la résolution</a>
+<li><a href="#org4b40e7b">2.1. Méthodologie</a></li>
+<li><a href="#org98709b5">2.2. Principe de la résolution</a>
 <ul>
-<li><a href="#org543e64d">2.2.1. Permutation</a></li>
-<li><a href="#orgd528d65">2.2.2. Chiffrement</a></li>
-<li><a href="#org5320c1d">2.2.3. Déchiffrement</a></li>
-<li><a href="#org4e0d907">2.2.4. Nettoyage</a></li>
-<li><a href="#orgbe36b89">2.2.5. Occurence</a></li>
-<li><a href="#orgc162aa0">2.2.6. Décryptage</a></li>
+<li><a href="#orga8aeca7">2.2.1. Permutation</a></li>
+<li><a href="#org5e3e0fa">2.2.2. Chiffrement</a></li>
+<li><a href="#orge098c2a">2.2.3. Déchiffrement</a></li>
+<li><a href="#org92a64b7">2.2.4. Nettoyage</a></li>
+<li><a href="#org004bd55">2.2.5. Occurence</a></li>
+<li><a href="#org4693788">2.2.6. Décryptage</a></li>
 </ul>
 </li>
-<li><a href="#org6cc885e">2.3. Code commenté</a></li>
+<li><a href="#orga622f50">2.3. Code commenté</a></li>
 </ul>
 </li>
-<li><a href="#org63151a4">3. Résultats obtenus</a></li>
+<li><a href="#org865ee06">3. Bilan Général</a></li>
 </ul>
 </div>
 </div>
@@ -227,13 +227,13 @@
 Rapport de <a href="https://perso.isima.fr/~lelenglet">Léa Lenglet</a> et <a href="https://perso.isima.fr/~mavillatte3">Mathilde Villatte</a> | Prep&rsquo;ISIMA <br />
 </p>
 
-<div id="orgcf40583" class="figure">
+<div id="orgabc595e" class="figure">
 <p><img src="https://cdn.uca.fr/images/logos/ISIMA-logo-carre.png" alt="ISIMA-logo-carre.png" width="500px" />
 </p>
 </div>
 
-<div id="outline-container-org5e1bf92" class="outline-2">
-<h2 id="org5e1bf92"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-org1be91ec" class="outline-2">
+<h2 id="org1be91ec"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Ce travail consiste à mettre en évidence la facilité avec laquelle il est possible de
@@ -280,7 +280,7 @@ original
 </p>
 
 
-<div id="org392d61a" class="figure">
+<div id="org3b65226" class="figure">
 <p><img src="https://www.frenchweb.fr/wp-content/uploads/2016/09/code-secret.jpg" alt="code-secret.jpg" width="350px" />
 </p>
 </div>
@@ -288,12 +288,12 @@ original
 </div>
 
 
-<div id="outline-container-org4b95974" class="outline-2">
-<h2 id="org4b95974"><span class="section-number-2">2.</span> Résolution</h2>
+<div id="outline-container-orga83b4ac" class="outline-2">
+<h2 id="orga83b4ac"><span class="section-number-2">2.</span> Résolution</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgea88798" class="outline-3">
-<h3 id="orgea88798"><span class="section-number-3">2.1.</span> Méthodologie</h3>
+<div id="outline-container-org4b40e7b" class="outline-3">
+<h3 id="org4b40e7b"><span class="section-number-3">2.1.</span> Méthodologie</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Afin d&rsquo;organiser notre travail efficacement, nous avons répartis les tâches de la manière suivante :
@@ -306,15 +306,15 @@ Afin d&rsquo;organiser notre travail efficacement, nous avons répartis les tâc
 </div>
 </div>
 
-<div id="outline-container-org57cfe63" class="outline-3">
-<h3 id="org57cfe63"><span class="section-number-3">2.2.</span> Principe de la résolution</h3>
+<div id="outline-container-org98709b5" class="outline-3">
+<h3 id="org98709b5"><span class="section-number-3">2.2.</span> Principe de la résolution</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Dans l&rsquo;ensemble des fonctions de la solution proposée, nous passons en argument la sortie afin qu&rsquo;elle soit modifiée par effet de bord. L&rsquo;alphabet &ldquo;ABCDEFGHIJKLMNOPQRSTUVWXYZ &rdquo; est celui choisi par défaut, on prend donc la liberté de réaffecter manuellement la variable <code>alphabet</code> pour éviter la surcharge dans la signature de certaines fonctions.
 </p>
 </div>
-<div id="outline-container-org543e64d" class="outline-4">
-<h4 id="org543e64d"><span class="section-number-4">2.2.1.</span> Permutation</h4>
+<div id="outline-container-orga8aeca7" class="outline-4">
+<h4 id="orga8aeca7"><span class="section-number-4">2.2.1.</span> Permutation</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 Nous commençons par implémenter la fonction <i>Permutation</i>, prenant comme argument un tableau de
@@ -327,7 +327,7 @@ Nous devons utiliser une variable temporaire <b>temp</b> afin de pouvoir stocker
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org877fd28"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Permutation</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org16ccdf1"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Permutation</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> ; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">compteur</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">random</span>;
     <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">alphabet</span><span style="color: #c678dd;">[</span>N<span style="color: #c678dd;">]</span>;
@@ -347,8 +347,8 @@ Nous devons utiliser une variable temporaire <b>temp</b> afin de pouvoir stocker
 </div>
 </div>
 
-<div id="outline-container-orgd528d65" class="outline-4">
-<h4 id="orgd528d65"><span class="section-number-4">2.2.2.</span> Chiffrement</h4>
+<div id="outline-container-org5e3e0fa" class="outline-4">
+<h4 id="org5e3e0fa"><span class="section-number-4">2.2.2.</span> Chiffrement</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
 Afin de réaliser notre fonction <i>chiffrement</i>, nous créons une fonction <code>indice_in_alpha</code>,
@@ -356,7 +356,7 @@ qui prend comme argument un caractère et renvoie son indice dans l&rsquo;alphab
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org93767f7"><span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">indice_in_alpha</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org58bc5a3"><span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">indice_in_alpha</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>=<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">alphabet</span><span style="color: #c678dd;">[</span>N<span style="color: #c678dd;">]</span>;
     strcpy<span style="color: #c678dd;">(</span>alphabet,<span style="color: #98be65;">"ABCDEFGHIJKLMNOPQRSTUVWXYZ "</span><span style="color: #c678dd;">)</span>;
@@ -379,7 +379,7 @@ Pour chaque caractère de notre texte, nous affectons à notre sortie le caract�
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="orgda0358c"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Chiffrement</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org23e5065"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Chiffrement</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> =<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>;
     <span style="color: #51afef;">while</span> <span style="color: #c678dd;">(</span>text<span style="color: #98be65;">[</span>i<span style="color: #98be65;">]</span>!=<span style="color: #98be65;">'\0'</span><span style="color: #c678dd;">){</span>
@@ -397,8 +397,8 @@ Pour chaque caractère de notre texte, nous affectons à notre sortie le caract�
 </div>
 </div>
 
-<div id="outline-container-org5320c1d" class="outline-4">
-<h4 id="org5320c1d"><span class="section-number-4">2.2.3.</span> Déchiffrement</h4>
+<div id="outline-container-orge098c2a" class="outline-4">
+<h4 id="orge098c2a"><span class="section-number-4">2.2.3.</span> Déchiffrement</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <p>
 Comme pour notre fonction <i>chiffrement</i>, nous créons une fonction <code>indice_in_clef</code> pour
@@ -408,7 +408,7 @@ dans la clef.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="orgd71950c"><span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">indice_in_clef</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org1587ec6"><span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">indice_in_clef</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>=<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #51afef;">while</span> <span style="color: #c678dd;">(</span>clef<span style="color: #98be65;">[</span>indice<span style="color: #98be65;">]</span>!=carac<span style="color: #c678dd;">){</span>
         indice++;
@@ -432,7 +432,7 @@ correspondant. Nous retrouvons donc notre texte déchiffré dans le tableau de c
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org7ea0b75"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Dechiffrement</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org4d01029"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Dechiffrement</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> =<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>;
     <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">alphabet</span><span style="color: #c678dd;">[</span>N<span style="color: #c678dd;">]</span>;
@@ -451,8 +451,8 @@ correspondant. Nous retrouvons donc notre texte déchiffré dans le tableau de c
 </div>
 </div>
 
-<div id="outline-container-org4e0d907" class="outline-4">
-<h4 id="org4e0d907"><span class="section-number-4">2.2.4.</span> Nettoyage</h4>
+<div id="outline-container-org92a64b7" class="outline-4">
+<h4 id="org92a64b7"><span class="section-number-4">2.2.4.</span> Nettoyage</h4>
 <div class="outline-text-4" id="text-2-2-4">
 <p>
 Nous créons une fonction <code>Changement_carac</code>, qui prend pour argument un caractère et qui
@@ -469,7 +469,7 @@ non accentuée.
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org913dc67"><span style="color: #ECBE7B;">char</span> <span style="color: #c678dd;">Changement_carac</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="orga050105"><span style="color: #ECBE7B;">char</span> <span style="color: #c678dd;">Changement_carac</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">carac</span><span style="color: #51afef;">){</span>
     <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">Retourne :</span>
 <span style="color: #5B6268;">     * '.' pour tous les &#233;l&#233;ments ne devant pas apparitre dans la chaine "propre"</span>
 <span style="color: #5B6268;">     * 'Majuscule' pour tous les &#233;l&#233;ments minuscules et accentu&#233;es</span>
@@ -522,7 +522,7 @@ texte ne contenant que les lettres de l&rsquo;alphabet et les espaces.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org484a3af"><span style="color: #ECBE7B;">void</span>  <span style="color: #c678dd;">Nettoyage</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="orgc290e77"><span style="color: #ECBE7B;">void</span>  <span style="color: #c678dd;">Nettoyage</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span>=<span style="color: #da8548; font-weight: bold;">0</span> ,<span style="color: #dcaeea;">j</span>=<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">temp</span>;
     <span style="color: #51afef;">while</span> <span style="color: #c678dd;">(</span>text<span style="color: #98be65;">[</span>i<span style="color: #98be65;">]</span>!=<span style="color: #98be65;">'\0'</span><span style="color: #c678dd;">){</span>
@@ -549,9 +549,8 @@ Lors de plusieurs tests sur différents caractères de ce type, nous nous sommes
 </div>
 </div>
 
-
-<div id="outline-container-orgbe36b89" class="outline-4">
-<h4 id="orgbe36b89"><span class="section-number-4">2.2.5.</span> Occurence</h4>
+<div id="outline-container-org004bd55" class="outline-4">
+<h4 id="org004bd55"><span class="section-number-4">2.2.5.</span> Occurence</h4>
 <div class="outline-text-4" id="text-2-2-5">
 <p>
 Nous créons une fonction <i>occurence</i>, qui prend comme arguments un tableau de flottants
@@ -566,7 +565,7 @@ lettres de notre texte.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-C" id="org2cbe211"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">occurence</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">tab</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="org2bbf650"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">occurence</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">tab</span><span style="color: #c678dd;">[]</span>,<span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span>=<span style="color: #da8548; font-weight: bold;">0</span>;
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">nb_carac</span>=<span style="color: #da8548; font-weight: bold;">1</span>;
     <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>;
@@ -585,12 +584,25 @@ lettres de notre texte.
 </div>
 </div>
 
-
-<div id="outline-container-orgc162aa0" class="outline-4">
-<h4 id="orgc162aa0"><span class="section-number-4">2.2.6.</span> Décryptage</h4>
+<div id="outline-container-org4693788" class="outline-4">
+<h4 id="org4693788"><span class="section-number-4">2.2.6.</span> Décryptage</h4>
 <div class="outline-text-4" id="text-2-2-6">
+<p>
+Nous créons une fonction <i>tri<sub>ordre</sub><sub>desc</sub></i>, qui prend comme argument un tableau de flottant 
+contenant les occurences, ainsi qu&rsquo;un tableau de caractère que nous allons remplir comme 
+effet de bord. <br />
+Cette fonction va remplir le tableau de caractères <b>app<sub>txt</sub></b> avec les lettres de l&rsquo;alphabet
+par ordre décroissant d&rsquo;occurence. Pour se faire, on parcours notre tableau <b>N</b> fois, et
+on cherche la plus grande occurence à chaque fois. Une fois trouvée, on la stocke dans une 
+variable <b>max<sub>occ</sub></b>, ainsi que l&rsquo;indice <b>indice<sub>max</sub></b> de cette occurence. <br />
+On passe l&rsquo;occurence à l&rsquo;indice <b>indice<sub>max</sub></b> à -1, afin de ne plus la prendre en compte 
+lors de nos prochaines exploration du tableau. On ajoute à la suite de notre tableau 
+<b>app<sub>txt</sub></b> la lettre de l&rsquo;alphabet à <b>indice<sub>max</sub></b>. On se retrouve à la fin avec notre 
+tableau de caractères classés par ordre décroissant d&rsquo;occurences.
+</p>
+
 <div class="org-src-container">
-<pre class="src src-C" id="org35790fb"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">tri_ordre_desc</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">occ</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">app_txt</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<pre class="src src-C" id="orgc7a16fd"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">tri_ordre_desc</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">occ</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">app_txt</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
   <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">0</span>, <span style="color: #dcaeea;">j</span>;
   <span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">max_occ</span>;
   <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice_max</span>;
@@ -612,10 +624,28 @@ lettres de notre texte.
       printf<span style="color: #98be65;">(</span><span style="color: #98be65;">"%c"</span>, app_txt<span style="color: #a9a1e1;">[</span>i<span style="color: #a9a1e1;">]</span><span style="color: #98be65;">)</span>;
   <span style="color: #c678dd;">}</span>
  app_txt<span style="color: #c678dd;">[</span>i+<span style="color: #da8548; font-weight: bold;">1</span><span style="color: #c678dd;">]</span> = <span style="color: #98be65;">' '</span>;
- printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"\n"</span><span style="color: #c678dd;">)</span>;
+ printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"\n\n"</span><span style="color: #c678dd;">)</span>;
 <span style="color: #51afef;">}</span>
+</pre>
+</div>
 
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">clef_freq</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">app_txt</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<p>
+Nous créons ensuite une fonction <i>clef<sub>freq</sub></i>, qui prend comme argument un tableau de 
+caractères <b>app<sub>txt</sub></b>, qui est le tableau de caractères classés par ordre décroissant 
+d&rsquo;occurence obtenu grâce à notre fonction <i>tri<sub>ordre</sub><sub>desc</sub></i> définie ci-dessus, ainsi qu&rsquo;un 
+second tableau de caractères <b>clef</b> dans lequel nous allons stocker notre clef afin de 
+pouvoir décrypter notre texte grâce à la fonction <i>dechiffrement</i>. <br />
+On initialise une variable <b>app<sub>fr</sub></b> dans laquelle nous allons stocker l&rsquo;alphabet dans
+l&rsquo;ordre décroissant d&rsquo;occurence dans la langue française. Nous allons ensuite remplir notre
+clef de la façon suivante : on parcours <b>app<sub>txt</sub></b>, et pour chaque lettre de <b>app<sub>txt</sub></b>, on
+prend son indice dans l&rsquo;alphabet et on affecte à <b>clef[indice]</b> la lettre au même indice 
+que <b>app<sub>txt</sub></b>. Cela nous donne la clef de chiffrement (plus ou moins fiable en fonction de
+la table d&rsquo;occurences et donc de la taille du texte), dont nous allons nous servir pour 
+décrypter notre texte.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-C" id="org86a2053"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">clef_freq</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">app_txt</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
   <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span>=<span style="color: #da8548; font-weight: bold;">0</span>;
   <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">indice</span>;
   <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">app_fr</span><span style="color: #c678dd;">[</span>N<span style="color: #c678dd;">]</span>;
@@ -627,10 +657,13 @@ lettres de notre texte.
   <span style="color: #c678dd;">}</span>
   clef<span style="color: #c678dd;">[</span>i<span style="color: #c678dd;">]</span>=<span style="color: #98be65;">'\0'</span>;
   printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"----CLEF----\n"</span><span style="color: #c678dd;">)</span>;
-  printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"%s\n"</span>, clef<span style="color: #c678dd;">)</span>;
+  printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"%s\n\n"</span>, clef<span style="color: #c678dd;">)</span>;
 <span style="color: #51afef;">}</span>
+</pre>
+</div>
 
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Decryptage</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
+<div class="org-src-container">
+<pre class="src src-C" id="org324d28d"><span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">Decryptage</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie</span><span style="color: #c678dd;">[]</span>, <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">text</span><span style="color: #c678dd;">[]</span><span style="color: #51afef;">){</span>
   <span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">freq</span><span style="color: #c678dd;">[</span>N-<span style="color: #da8548; font-weight: bold;">1</span><span style="color: #c678dd;">]</span>;
   <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">app_txt</span><span style="color: #c678dd;">[</span>N<span style="color: #c678dd;">]</span>;
   <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">clef</span><span style="color: #c678dd;">[</span>N<span style="color: #c678dd;">]</span>;
@@ -647,11 +680,11 @@ lettres de notre texte.
 </div>
 </div>
 
-<div id="outline-container-org6cc885e" class="outline-3">
-<h3 id="org6cc885e"><span class="section-number-3">2.3.</span> Code commenté</h3>
+<div id="outline-container-orga622f50" class="outline-3">
+<h3 id="orga622f50"><span class="section-number-3">2.3.</span> Code commenté</h3>
 <div class="outline-text-3" id="text-2-3">
 <div class="org-src-container">
-<pre class="src src-C" id="orge405726"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">stdio.h</span><span style="color: #51afef;">&gt;</span>
+<pre class="src src-C" id="org85a1d73"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">stdio.h</span><span style="color: #51afef;">&gt;</span>
 <span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">string.h</span><span style="color: #51afef;">&gt;</span>
 <span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">stdlib.h</span><span style="color: #51afef;">&gt;</span>
 <span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">time.h</span><span style="color: #51afef;">&gt;</span>
@@ -673,15 +706,19 @@ lettres de notre texte.
 
 <span style="color: #5B6268;">//// </span><span style="color: #5B6268;">FONCTION 4 : NETTOYAGE ////</span>
 &lt;&lt;changement_carac&gt;&gt;
+
 &lt;&lt;nettoyage&gt;&gt;
 
 <span style="color: #5B6268;">//// </span><span style="color: #5B6268;">FONCTION 5 : OCCURENCE ////</span>
 &lt;&lt;occurence&gt;&gt;
 
 
-<span style="color: #5B6268;">//// </span><span style="color: #5B6268;">FONCTION 6 : DECRYPTAGE ////</span>
-&lt;&lt;decryptage&gt;&gt;
+<span style="color: #5B6268;">//////////////////// </span><span style="color: #5B6268;">FONCTION 6 : DECRYPTAGE //////////////////////////////////////////////////////////////////////////////////////////////////////</span>
+&lt;&lt;tri_ordre_desc&gt;&gt;
 
+&lt;&lt;clef_freq&gt;&gt;
+
+&lt;&lt;decryptage&gt;&gt;
 
 <span style="color: #ECBE7B;">int</span> main<span style="color: #51afef;">(){</span>
     srand<span style="color: #c678dd;">(</span>time<span style="color: #98be65;">(</span><span style="color: #a9a1e1;">NULL</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>;
@@ -725,7 +762,7 @@ lettres de notre texte.
     <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie_dechiffree1</span><span style="color: #c678dd;">[</span>strlen<span style="color: #98be65;">(</span>texte_propre<span style="color: #98be65;">)</span><span style="color: #c678dd;">]</span>;
     Dechiffrement<span style="color: #c678dd;">(</span>sortie_dechiffree1,sortie_chiffree,permutation<span style="color: #c678dd;">)</span>;
     printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"------- TEXTE DECHIFFREE PAR FONCTION 4 -------\n"</span><span style="color: #c678dd;">)</span>;
-    printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"%s\n"</span>,sortie_dechiffree<span style="color: #c678dd;">)</span>;
+    printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"%s\n"</span>,sortie_dechiffree1<span style="color: #c678dd;">)</span>;
     printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"------- FIN ------\n\n"</span><span style="color: #c678dd;">)</span>;
 
 
@@ -733,8 +770,8 @@ lettres de notre texte.
     <span style="color: #ECBE7B;">char</span> <span style="color: #dcaeea;">sortie_dechiffree2</span><span style="color: #c678dd;">[</span>strlen<span style="color: #98be65;">(</span>texte_propre<span style="color: #98be65;">)</span><span style="color: #c678dd;">]</span>;
     Decryptage<span style="color: #c678dd;">(</span>sortie_dechiffree2, sortie_chiffree<span style="color: #c678dd;">)</span>;
     printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"------- TEXTE DECHIFFREE PAR FONCTION 6 -------\n"</span><span style="color: #c678dd;">)</span>;
-    printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"%s\n"</span>,sortie_dechiffree<span style="color: #c678dd;">)</span>;
-    printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"------- FIN -------\n"</span><span style="color: #c678dd;">)</span>;
+    printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"%s\n"</span>,sortie_dechiffree2<span style="color: #c678dd;">)</span>;
+    printf<span style="color: #c678dd;">(</span><span style="color: #98be65;">"------- FIN -------\n\n"</span><span style="color: #c678dd;">)</span>;
 
     <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
 <span style="color: #51afef;">}</span>
@@ -742,53 +779,35 @@ lettres de notre texte.
 
 </pre>
 </div>
-</div>
-</div>
-</div>
+
+<p>
+Nous avons rencontré un problèmes au niveau de la fonction 6 au niveau des fréquences d&rsquo;apparition. En effet, comme nous pouvons le voir sur le graphique ci-dessous plusieurs fréquences d&rsquo;apparition sont quasiment identiques. Dans des textes, le tableau des fréquences n&rsquo;est jamais le même que celui de références car le texte évolue en fonction de son écriture (choix des mots).
+</p>
 
 
-<div id="outline-container-org63151a4" class="outline-2">
-<h2 id="org63151a4"><span class="section-number-2">3.</span> Résultats obtenus</h2>
-<div class="outline-text-2" id="text-3">
-<pre class="example" id="orgfc33572">
-------- ALPHABET -------
-|ABCDEFGHIJKLMNOPQRSTUVWXYZ |
-
-------- CLEF DE PERMUTATION -------
-GYTVISF APCQEBMRDHKZOJLWNXU
-
-------- TEXTE NETTOYE -------
- CETTE HEURE OU JE DESCENDAIS APPRENDRE LE MENU LE DINER ETAIT DEJA COMMENCE ET FRANCOISE COMMANDANT AUX FORCES DE LA NATURE DEVENUES SES AIDES COMME DANS LES FEERIES OU LES GEANTS SE FONT ENGAGER COMME CUISINIERS FRAPPAIT LA HOUILLE DONNAIT A LA VAPEUR DES POMMES DE TERRE A ETUVER ET FAISAIT FINIR A POINT PAR LE FEU LES CHEFSDOEUVRE CULINAIRES DABORD PREPARES DANS DES RECIPIENTS DE CERAMISTES QUI ALLAIENT DES GRANDES CUVES MARMITES CHAUDRONS ET POISSONNIERES AUX TERRINES POUR LE GIBIER MOULES A PATISSERIE ET PETITS POTS DE CREME EN PASSANT PAR UNE COLLECTION COMPLETE DE CASSEROLES DE TOUTES DIMENSIONS JE MARRETAIS A VOIR SUR LA TABLE OU LA FILLE DE CUISINE VENAIT DE LES ECOSSER LES PETITS POIS ALIGNES ET NOMBRES COMME DES BILLES VERTES DANS UN JEU  MAIS MON RAVISSEMENT ETAIT DEVANT LES ASPERGES TREMPEES DOUTREMER ET DE ROSE ET DONT LEPI FINEMENT PIGNOCHE DE MAUVE ET DAZUR SE DEGRADE INSENSIBLEMENT JUSQUAU PIED  ENCORE SOUILLE POURTANT DU SOL DE LEUR PLANT  PAR DES IRISATIONS QUI NE SONT PAS DE LA TERRE IL ME SEMBLAIT QUE CES NUANCES CELESTES TRAHISSAIENT LES DELICIEUSES CREATURES QUI SETAIENT AMUSEES A SE METAMORPHOSER EN LEGUMES ET QUI A TRAVERS LE DEGUISEMENT DE LEUR CHAIR COMESTIBLE ET FERME LAISSAIENT APERCEVOIR EN CES COULEURS NAISSANTES DAURORE EN CES EBAUCHES DARCENCIEL EN CETTE EXTINCTION DE SOIRS BLEUS CETTE ESSENCE PRECIEUSE QUE JE RECONNAISSAIS ENCORE QUAND TOUTE LA NUIT QUI SUIVAIT UN DINER OU JEN AVAIS MANGE ELLES JOUAIENT DANS LEURS FARCES POETIQUES ET GROSSIERES COMME UNE FEERIE DE SHAKESPEARE A CHANGER MON POT DE CHAMBRE EN UN VASE DE PARFUM LA PAUVRE CHARITE DE GIOTTO COMME LAPPELAIT SWANN CHARGEE PAR FRANCOISE DE LES E PLUMER U LES AVAIT PRES DELLE DANS UNE CORBEILLE SON AIR ETAIT DOULOUREUX COMME SI ELLE RESSENTAIT TOUS LES MALHEURS DE LA TERRE  ET LES LEGERES COURONNES DAZUR QUI CEIGNAIENT LES ASPERGES AUDESSUS DE LEURS TUNIQUES DE ROSE ETAIENT FINEMENT DESSINEES ETOILE PAR ETOILE COMME LE SONT DANS LA FRESQUE LES FLEURS BANDEES AUTOUR DU FRONT OU PIQUEES DANS LA CORBEILLE DE LA VERTU DE PADOUE ET CEPENDANT FRANCOISE TOURNAIT A LA BROCHE UN DE CES POULETS COMME ELLE SEULE SAVAIT EN ROTIR QUI AVAIENT PORTE LOIN DANS COMBRAY LODEUR DE SES MERITES ET QUI PENDANT QUELLE NOUS LES SERVAIT A TABLE FAISAIENT PREDOMINER LA DOUCEUR DANS MA CONCEPTION SPECIALE DE SON CARACTERE LAROME DE CETTE CHAIR QUELLE SAVAIT RENDRE SI ONCTUEUSE ET SI TENDRE NETANT POUR MOI QUE LE PROPRE PARFUM DUNE DE SES VERTUS MAIS LE JOUR OU PENDANT QUE MON PERE CONSULTAIT LE CONSEIL DE FAMILLE SUR LA RENCONTRE DE LEGRANDIN JE DESCENDIS A LA CUISINE ETAIT UN DE CEUX OU LA CHARITE DE GIOTTO TRES MALADE DE SON ACCOUCHEMENT RECENT NE POUVAIT SE LEVER  FRANCOISE NETANT PLUS AIDEE ETAIT EN RETARD QUAND JE FUS EN BAS ELLE ETAIT EN TRAIN DANS LARRIERECUISINE QUI DONNAIT SUR LA BASSECOUR DE TUER UN POULET QUI PAR SA RESISTANCE DESESPEREE ET BIEN NATURELLE MAIS ACCOMPAGNEE PAR FRANCOISE HORS DELLE TANDIS QUELLE CHERCHAIT A LUI FENDRE LE COU SOUS LOREILLE DES CRIS DE E SALE BETE  SALE BETE  U METTAIT LA SAINTE DOUCEUR ET LONCTION DE NOTRE SERVANTE UN PEU MOINS EN LUMIERE QUIL NEUT FAIT AU DINER DU LENDEMAIN PAR SA PEAU BRODEE DOR COMME UNE CHASUBLE ET SON JUS PRECIEUX EGOUTTE DUN CIBOIRE QUAND IL FUT MORT FRANCOISE RECUEILLIT LE SANG QUI COULAIT SANS NOYER SA RANCUNE EUT ENCORE UN SURSAUT DE COLERE ET REGARDANT LE CADAVRE DE SON ENNEMI DIT UNE DERNIERE FOIS  E SALE BETE  U JE REMONTAI TOUT TREMBLANT  JAURAIS VOULU QUON MIT FRANCOISE TOUT DE SUITE A LA PORTE MAIS QUI MEUT FAIT DES BOULES AUSSI CHAUDES DU CAFE AUSSI PARFUME ET MEME CES POULETS  ET EN REALITE CE LACHE CALCUL TOUT LE MONDE AVAIT EU A LE FAIRE COMME MOI CAR MA TANTE LEONIE SAVAIT  CE QUE JIGNORAIS ENCORE  QUE FRANCOISE QUI POUR SA FILLE POUR SES NEVEUX AURAIT DONNE SA VIE SANS UNE PLAINTE ETAIT POUR DAUTRES ETRES DUNE DURETE SINGULIERE MALGRE CELA MA TANTE LAVAIT GARDEE CAR SI ELLE CONNAISSAIT SA CRUAUTE ELLE APPRECIAIT SON SERVICE JE MAPERCUS PEU A PEU QUE LA DOUCEUR LA COMPONCTION LES VERTUS DE FRANCOISE CACHAIENT DES TRAGEDIES DARRIERECUISINE COMME LHISTOIRE DECOUVRE QUE LES REGNES DES ROIS ET DES REINES QUI SONT REPRESENTES LES MAINS JOINTES DANS LES VITRAUX DES EGLISES FURENT MARQUES DINCIDENTS SANGLANTS JE ME RENDIS COMPTE QUE EN DEHORS DE CEUX DE SA PARENTE LES HUMAINS EXCITAIENT DAUTANT PLUS SA PITIE PAR LEURS MALHEURS QUILS VIVAIENT PLUS ELOIGNES DELLE LES TORRENTS DE LARMES QUELLE VERSAIT EN LISANT LE JOURNAL SUR LES INFORTUNES DES INCONNUS SE TARISSAIENT VITE SI ELLE POUVAIT SE REPRESENTER LA PERSONNE QUI EN ETAIT LOBJET DUNE FACON UN PEU PRECISE UNE DE CES NUITS QUI SUIVIRENT LACCOUCHEMENT DE LA FILLE DE CUISINE CELLECI FUT PRISE DATROCES COLIQUES  MAMAN LENTENDIT SE PLAINDRE SE LEVA ET REVEILLA FRANCOISE QUI INSENSIBLE DECLARA QUE TOUS CES CRIS ETAIENT UNE COMEDIE QUELLE VOULAIT E FAIRE LA MAITRESSE U LE MEDECIN QUI CRAIGNAIT CES CRISES AVAIT MIS UN SIGNET DANS UN LIVRE DE MEDECINE QUE NOUS AVIONS A LA PAGE OU ELLES SONT DECRITES ET OU IL NOUS AVAIT DIT DE NOUS REPORTER POUR TROUVER LINDICATION DES PREMIERS SOINS A DONNER MA MERE ENVOYA FRANCOISE CHERCHER LE LIVRE EN LUI RECOMMANDANT DE NE PAS LAISSER TOMBER LE SIGNET AU BOUT DUNE HEURE FRANCOISE NETAIT PAS REVENUE  MA MERE INDIGNEE CRUT QUELLE SETAIT RECOUCHEE ET ME DIT DALLER VOIR MOIMEME DANS LA BIBLIOTHEQUE JY TROUVAI FRANCOISE QUI AYANT VOULU REGARDER CE QUE LE SIGNET MARQUAIT LISAIT LA DESCRIPTION CLINIQUE DE LA CRISE ET POUSSAIT DES SANGLOTS MAINTENANT QUIL SAGISSAIT DUNE MALADETYPE QUELLE NE CONNAISSAIT PAS  CHAQUE SYMPTOME DOULOUREUX MENTIONNE PAR LAUTEUR DU TRAITE ELLE SECRIAIT HE LA  SAINTE VIERGE ESTIL POSSIBLE QUE LE BON DIEU VEUILLE FAIRE SOUFFRIR AINSI UNE MALHEUREUSE CREATURE HUMAINE  HE  LA PAUVRE  MAIS DES QUE JE LEUS APPELEE ET QUELLE FUT REVENUE PRES DU LIT DE LA CHARITE DE GIOTTO SES LARMES CESSERENT AUSSITOT DE COULER  ELLE NE PUT RECONNAITRE NI CETTE AGREABLE SENSATION DE PITIE ET DATTENDRISSEMENT QUELLE CONNAISSAIT BIEN ET QUE LA LECTURE DES JOURNAUX LUI AVAIT SOUVENT DONNEE NI AUCUN PLAISIR DE MEME FAMILLE DANS LENNUI ET DANS LIRRITATION DE SETRE LEVEE AU MILIEU DE LA NUIT POUR LA FILLE DE CUISINE ET A LA VUE DES MEMES SOUFFRANCES DONT LA DESCRIPTION LAVAIT FAIT PLEURER ELLE NEUT PLUS QUE DES RONCHONNEMENTS DE MAUVAISE HUMEUR MEME DAFFREUX SARCASMES DISANT QUAND ELLE CRUT QUE NOUS ETIONS PARTIS ET NE POUVIONS PLUS LENTENDRE  E ELLE NAVAIT QUA NE PAS FAIRE CE QUIL FAUT POUR CA  CA LUI A FAIT PLAISIR  QUELLE NE FASSE PAS DE MANIERES MAINTENANT FAUTIL TOUT DE MEME QUUN GARCON AIT ETE ABANDONNE DU BON DIEU POUR ALLER AVEC CA AH  CEST BIEN COMME ON DISAIT DANS LE PATOIS DE MA PAUVRE MERE  QUI DU CUL DUN CHIEN SAMOUROSE IL LUI PARAIT UNE ROSE SI QUAND SON PETITFILS ETAIT UN PEU ENRHUME DU CERVEAU ELLE PARTAIT LA NUIT MEME MALADE AU LIEU DE SE COUCHER POUR VOIR SIL NAVAIT BESOIN DE RIEN FAISANT QUATRE LIEUES A PIED AVANT LE JOUR AFIN DETRE RENTREE POUR SON TRAVAIL EN REVANCHE CE MEME AMOUR DES SIENS ET SON DESIR DASSURER LA GRANDEUR FUTURE DE SA MAISON SE TRADUISAIT DANS SA POLITIQUE A LEGARD DES AUTRES DOMESTIQUES PAR UNE MAXIME CONSTANTE QUI FUT DE NEN JAMAIS LAISSER UN SEUL SIMPLANTER CHEZ MA TANTE QUELLE METTAIT DAILLEURS UNE SORTE DORGUEIL A NE LAISSER APPROCHER PAR PERSONNE PREFERANT QUAND ELLEMEME ETAIT MALADE SE RELEVER POUR LUI DONNER SON EAU DE VICHY PLUTOT QUE DE PERMETTRE LACCES DE LA CHAMBRE DE SA MAITRESSE A LA FILLE DE CUISINE ET COMME CET HYMENOPTERE OBSERVE PAR FABRE LA GUEPE FOUISSEUSE QUI POUR QUE SES PETITS APRES SA MORT AIENT DE LA VIANDE FRAICHE A MANGER APPELLE LANATOMIE AU SECOURS DE SA CRUAUTE ET AYANT CAPTURE DES CHARANCONS ET DES ARAIGNEES LEUR PERCE AVEC UN SAVOIR ET UNE ADRESSE MERVEILLEUX LE CENTRE NERVEUX DOU DEPEND LE MOUVEMENT DES PATTES MAIS NON LES AUTRES FONCTIONS DE LA VIE DE FACON QUE LINSECTE PARALYSE PRES DUQUEL ELLE DEPOSE SES OEUFS FOURNISSE AUX LARVES QUAND ELLES ECLORONT UN GIBIER DOCILE INOFFENSIF INCAPABLE DE FUITE OU DE RESISTANCE MAIS NULLEMENT FAISANDE FRANCOISE TROUVAIT POUR SERVIR SA VOLONTE PERMANENTE DE RENDRE LA MAISON INTENABLE A TOUT DOMESTIQUE DES RUSES SI SAVANTES ET SI IMPITOYABLES QUE BIEN DES ANNEES PLUS TARD NOUS APPRIMES QUE SI CET ETELA NOUS AVIONS MANGE PRESQUE TOUS LES JOURS DES ASPERGES CETAIT PARCE QUE LEUR ODEUR DONNAIT A LA PAUVRE FILLE DE CUISINE CHARGEE DE LES EPLUCHER DES CRISES DASTHME DUNE TELLE VIOLENCE QUELLE FUT OBLIGEE DE FINIR PAR SEN ALLER
-------- FIN ------
-
-------- TABLE DES FREQUENCES --------
-A = 0.071948 | B = 0.006075 | C = 0.029661 | D = 0.034187 | E = 0.148898 | F = 0.010602 | G = 0.006909 | H = 0.007028 | I = 0.060036 | J = 0.003097 | K = 0.000119 | L = 0.046575 | M = 0.023347 | N = 0.057653 | O = 0.039547 | P = 0.021203 | Q = 0.010482 | R = 0.054318 | S = 0.068851 | T = 0.054556 | U = 0.053961 | V = 0.011435 | W = 0.000119 | X = 0.002025 | Y = 0.001429 | Z = 0.000357 |   = 0.175462 |
-
-------- TEXTE CHIFFREE -------
-UTIZZIU IOHIUMOUPIUVIKTIBVGAKUGRRHIBVHIUQIUEIBOUQIUVABIHUIZGAZUVIPGUTMEEIBTIUIZUSHGBTMAKIUTMEEGBVGBZUGOWUSMHTIKUVIUQGUBGZOHIUVIJIBOIKUKIKUGAVIKUTMEEIUVGBKUQIKUSIIHAIKUMOUQIKUFIGBZKUKIUSMBZUIBFGFIHUTMEEIUTOAKABAIHKUSHGRRGAZUQGU MOAQQIUVMBBGAZUGUQGUJGRIOHUVIKURMEEIKUVIUZIHHIUGUIZOJIHUIZUSGAKGAZUSABAHUGURMABZURGHUQIUSIOUQIKUT ISKVMIOJHIUTOQABGAHIKUVGYMHVURHIRGHIKUVGBKUVIKUHITARAIBZKUVIUTIHGEAKZIKUDOAUGQQGAIBZUVIKUFHGBVIKUTOJIKUEGHEAZIKUT GOVHMBKUIZURMAKKMBBAIHIKUGOWUZIHHABIKURMOHUQIUFAYAIHUEMOQIKUGURGZAKKIHAIUIZURIZAZKURMZKUVIUTHIEIUIBURGKKGBZURGHUOBIUTMQQITZAMBUTMERQIZIUVIUTGKKIHMQIKUVIUZMOZIKUVAEIBKAMBKUPIUEGHHIZGAKUGUJMAHUKOHUQGUZGYQIUMOUQGUSAQQIUVIUTOAKABIUJIBGAZUVIUQIKUITMKKIHUQIKURIZAZKURMAKUGQAFBIKUIZUBMEYHIKUTMEEIUVIKUYAQQIKUJIHZIKUVGBKUOBUPIOUUEGAKUEMBUHGJAKKIEIBZUIZGAZUVIJGBZUQIKUGKRIHFIKUZHIERIIKUVMOZHIEIHUIZUVIUHMKIUIZUVMBZUQIRAUSABIEIBZURAFBMT IUVIUEGOJIUIZUVGXOHUKIUVIFHGVIUABKIBKAYQIEIBZUPOKDOGOURAIVUUIBTMHIUKMOAQQIURMOHZGBZUVOUKMQUVIUQIOHURQGBZUURGHUVIKUAHAKGZAMBKUDOAUBIUKMBZURGKUVIUQGUZIHHIUAQUEIUKIEYQGAZUDOIUTIKUBOGBTIKUTIQIKZIKUZHG AKKGAIBZUQIKUVIQATAIOKIKUTHIGZOHIKUDOAUKIZGAIBZUGEOKIIKUGUKIUEIZGEMHR MKIHUIBUQIFOEIKUIZUDOAUGUZHGJIHKUQIUVIFOAKIEIBZUVIUQIOHUT GAHUTMEIKZAYQIUIZUSIHEIUQGAKKGAIBZUGRIHTIJMAHUIBUTIKUTMOQIOHKUBGAKKGBZIKUVGOHMHIUIBUTIKUIYGOT IKUVGHTIBTAIQUIBUTIZZIUIWZABTZAMBUVIUKMAHKUYQIOKUTIZZIUIKKIBTIURHITAIOKIUDOIUPIUHITMBBGAKKGAKUIBTMHIUDOGBVUZMOZIUQGUBOAZUDOAUKOAJGAZUOBUVABIHUMOUPIBUGJGAKUEGBFIUIQQIKUPMOGAIBZUVGBKUQIOHKUSGHTIKURMIZADOIKUIZUFHMKKAIHIKUTMEEIUOBIUSIIHAIUVIUK GCIKRIGHIUGUT GBFIHUEMBURMZUVIUT GEYHIUIBUOBUJGKIUVIURGHSOEUQGURGOJHIUT GHAZIUVIUFAMZZMUTMEEIUQGRRIQGAZUKLGBBUT GHFIIURGHUSHGBTMAKIUVIUQIKUIURQOEIHUOUQIKUGJGAZURHIKUVIQQIUVGBKUOBIUTMHYIAQQIUKMBUGAHUIZGAZUVMOQMOHIOWUTMEEIUKAUIQQIUHIKKIBZGAZUZMOKUQIKUEGQ IOHKUVIUQGUZIHHIUUIZUQIKUQIFIHIKUTMOHMBBIKUVGXOHUDOAUTIAFBGAIBZUQIKUGKRIHFIKUGOVIKKOKUVIUQIOHKUZOBADOIKUVIUHMKIUIZGAIBZUSABIEIBZUVIKKABIIKUIZMAQIURGHUIZMAQIUTMEEIUQIUKMBZUVGBKUQGUSHIKDOIUQIKUSQIOHKUYGBVIIKUGOZMOHUVOUSHMBZUMOURADOIIKUVGBKUQGUTMHYIAQQIUVIUQGUJIHZOUVIURGVMOIUIZUTIRIBVGBZUSHGBTMAKIUZMOHBGAZUGUQGUYHMT IUOBUVIUTIKURMOQIZKUTMEEIUIQQIUKIOQIUKGJGAZUIBUHMZAHUDOAUGJGAIBZURMHZIUQMABUVGBKUTMEYHGNUQMVIOHUVIUKIKUEIHAZIKUIZUDOAURIBVGBZUDOIQQIUBMOKUQIKUKIHJGAZUGUZGYQIUSGAKGAIBZURHIVMEABIHUQGUVMOTIOHUVGBKUEGUTMBTIRZAMBUKRITAGQIUVIUKMBUTGHGTZIHIUQGHMEIUVIUTIZZIUT GAHUDOIQQIUKGJGAZUHIBVHIUKAUMBTZOIOKIUIZUKAUZIBVHIUBIZGBZURMOHUEMAUDOIUQIURHMRHIURGHSOEUVOBIUVIUKIKUJIHZOKUEGAKUQIUPMOHUMOURIBVGBZUDOIUEMBURIHIUTMBKOQZGAZUQIUTMBKIAQUVIUSGEAQQIUKOHUQGUHIBTMBZHIUVIUQIFHGBVABUPIUVIKTIBVAKUGUQGUTOAKABIUIZGAZUOBUVIUTIOWUMOUQGUT GHAZIUVIUFAMZZMUZHIKUEGQGVIUVIUKMBUGTTMOT IEIBZUHITIBZUBIURMOJGAZUKIUQIJIHUUSHGBTMAKIUBIZGBZURQOKUGAVIIUIZGAZUIBUHIZGHVUDOGBVUPIUSOKUIBUYGKUIQQIUIZGAZUIBUZHGABUVGBKUQGHHAIHITOAKABIUDOAUVMBBGAZUKOHUQGUYGKKITMOHUVIUZOIHUOBURMOQIZUDOAURGHUKGUHIKAKZGBTIUVIKIKRIHIIUIZUYAIBUBGZOHIQQIUEGAKUGTTMERGFBIIURGHUSHGBTMAKIU MHKUVIQQIUZGBVAKUDOIQQIUT IHT GAZUGUQOAUSIBVHIUQIUTMOUKMOKUQMHIAQQIUVIKUTHAKUVIUIUKGQIUYIZIUUKGQIUYIZIUUOUEIZZGAZUQGUKGABZIUVMOTIOHUIZUQMBTZAMBUVIUBMZHIUKIHJGBZIUOBURIOUEMABKUIBUQOEAIHIUDOAQUBIOZUSGAZUGOUVABIHUVOUQIBVIEGABURGHUKGURIGOUYHMVIIUVMHUTMEEIUOBIUT GKOYQIUIZUKMBUPOKURHITAIOWUIFMOZZIUVOBUTAYMAHIUDOGBVUAQUSOZUEMHZUSHGBTMAKIUHITOIAQQAZUQIUKGBFUDOAUTMOQGAZUKGBKUBMNIHUKGUHGBTOBIUIOZUIBTMHIUOBUKOHKGOZUVIUTMQIHIUIZUHIFGHVGBZUQIUTGVGJHIUVIUKMBUIBBIEAUVAZUOBIUVIHBAIHIUSMAKUUIUKGQIUYIZIUUOUPIUHIEMBZGAUZMOZUZHIEYQGBZUUPGOHGAKUJMOQOUDOMBUEAZUSHGBTMAKIUZMOZUVIUKOAZIUGUQGURMHZIUEGAKUDOAUEIOZUSGAZUVIKUYMOQIKUGOKKAUT GOVIKUVOUTGSIUGOKKAURGHSOEIUIZUEIEIUTIKURMOQIZKUUIZUIBUHIGQAZIUTIUQGT IUTGQTOQUZMOZUQIUEMBVIUGJGAZUIOUGUQIUSGAHIUTMEEIUEMAUTGHUEGUZGBZIUQIMBAIUKGJGAZUUTIUDOIUPAFBMHGAKUIBTMHIUUDOIUSHGBTMAKIUDOAURMOHUKGUSAQQIURMOHUKIKUBIJIOWUGOHGAZUVMBBIUKGUJAIUKGBKUOBIURQGABZIUIZGAZURMOHUVGOZHIKUIZHIKUVOBIUVOHIZIUKABFOQAIHIUEGQFHIUTIQGUEGUZGBZIUQGJGAZUFGHVIIUTGHUKAUIQQIUTMBBGAKKGAZUKGUTHOGOZIUIQQIUGRRHITAGAZUKMBUKIHJATIUPIUEGRIHTOKURIOUGURIOUDOIUQGUVMOTIOHUQGUTMERMBTZAMBUQIKUJIHZOKUVIUSHGBTMAKIUTGT GAIBZUVIKUZHGFIVAIKUVGHHAIHITOAKABIUTMEEIUQ AKZMAHIUVITMOJHIUDOIUQIKUHIFBIKUVIKUHMAKUIZUVIKUHIABIKUDOAUKMBZUHIRHIKIBZIKUQIKUEGABKUPMABZIKUVGBKUQIKUJAZHGOWUVIKUIFQAKIKUSOHIBZUEGHDOIKUVABTAVIBZKUKGBFQGBZKUPIUEIUHIBVAKUTMERZIUDOIUIBUVI MHKUVIUTIOWUVIUKGURGHIBZIUQIKU OEGABKUIWTAZGAIBZUVGOZGBZURQOKUKGURAZAIURGHUQIOHKUEGQ IOHKUDOAQKUJAJGAIBZURQOKUIQMAFBIKUVIQQIUQIKUZMHHIBZKUVIUQGHEIKUDOIQQIUJIHKGAZUIBUQAKGBZUQIUPMOHBGQUKOHUQIKUABSMHZOBIKUVIKUABTMBBOKUKIUZGHAKKGAIBZUJAZIUKAUIQQIURMOJGAZUKIUHIRHIKIBZIHUQGURIHKMBBIUDOAUIBUIZGAZUQMYPIZUVOBIUSGTMBUOBURIOURHITAKIUOBIUVIUTIKUBOAZKUDOAUKOAJAHIBZUQGTTMOT IEIBZUVIUQGUSAQQIUVIUTOAKABIUTIQQITAUSOZURHAKIUVGZHMTIKUTMQADOIKUUEGEGBUQIBZIBVAZUKIURQGABVHIUKIUQIJGUIZUHIJIAQQGUSHGBTMAKIUDOAUABKIBKAYQIUVITQGHGUDOIUZMOKUTIKUTHAKUIZGAIBZUOBIUTMEIVAIUDOIQQIUJMOQGAZUIUSGAHIUQGUEGAZHIKKIUOUQIUEIVITABUDOAUTHGAFBGAZUTIKUTHAKIKUGJGAZUEAKUOBUKAFBIZUVGBKUOBUQAJHIUVIUEIVITABIUDOIUBMOKUGJAMBKUGUQGURGFIUMOUIQQIKUKMBZUVITHAZIKUIZUMOUAQUBMOKUGJGAZUVAZUVIUBMOKUHIRMHZIHURMOHUZHMOJIHUQABVATGZAMBUVIKURHIEAIHKUKMABKUGUVMBBIHUEGUEIHIUIBJMNGUSHGBTMAKIUT IHT IHUQIUQAJHIUIBUQOAUHITMEEGBVGBZUVIUBIURGKUQGAKKIHUZMEYIHUQIUKAFBIZUGOUYMOZUVOBIU IOHIUSHGBTMAKIUBIZGAZURGKUHIJIBOIUUEGUEIHIUABVAFBIIUTHOZUDOIQQIUKIZGAZUHITMOT IIUIZUEIUVAZUVGQQIHUJMAHUEMAEIEIUVGBKUQGUYAYQAMZ IDOIUPNUZHMOJGAUSHGBTMAKIUDOAUGNGBZUJMOQOUHIFGHVIHUTIUDOIUQIUKAFBIZUEGHDOGAZUQAKGAZUQGUVIKTHARZAMBUTQABADOIUVIUQGUTHAKIUIZURMOKKGAZUVIKUKGBFQMZKUEGABZIBGBZUDOAQUKGFAKKGAZUVOBIUEGQGVIZNRIUDOIQQIUBIUTMBBGAKKGAZURGKUUT GDOIUKNERZMEIUVMOQMOHIOWUEIBZAMBBIURGHUQGOZIOHUVOUZHGAZIUIQQIUKITHAGAZU IUQGUUKGABZIUJAIHFIUIKZAQURMKKAYQIUDOIUQIUYMBUVAIOUJIOAQQIUSGAHIUKMOSSHAHUGABKAUOBIUEGQ IOHIOKIUTHIGZOHIU OEGABIUU IUUQGURGOJHIUUEGAKUVIKUDOIUPIUQIOKUGRRIQIIUIZUDOIQQIUSOZUHIJIBOIURHIKUVOUQAZUVIUQGUT GHAZIUVIUFAMZZMUKIKUQGHEIKUTIKKIHIBZUGOKKAZMZUVIUTMOQIHUUIQQIUBIUROZUHITMBBGAZHIUBAUTIZZIUGFHIGYQIUKIBKGZAMBUVIURAZAIUIZUVGZZIBVHAKKIEIBZUDOIQQIUTMBBGAKKGAZUYAIBUIZUDOIUQGUQITZOHIUVIKUPMOHBGOWUQOAUGJGAZUKMOJIBZUVMBBIIUBAUGOTOBURQGAKAHUVIUEIEIUSGEAQQIUVGBKUQIBBOAUIZUVGBKUQAHHAZGZAMBUVIUKIZHIUQIJIIUGOUEAQAIOUVIUQGUBOAZURMOHUQGUSAQQIUVIUTOAKABIUIZUGUQGUJOIUVIKUEIEIKUKMOSSHGBTIKUVMBZUQGUVIKTHARZAMBUQGJGAZUSGAZURQIOHIHUIQQIUBIOZURQOKUDOIUVIKUHMBT MBBIEIBZKUVIUEGOJGAKIU OEIOHUEIEIUVGSSHIOWUKGHTGKEIKUVAKGBZUDOGBVUIQQIUTHOZUDOIUBMOKUIZAMBKURGHZAKUIZUBIURMOJAMBKURQOKUQIBZIBVHIUUIUIQQIUBGJGAZUDOGUBIURGKUSGAHIUTIUDOAQUSGOZURMOHUTGUUTGUQOAUGUSGAZURQGAKAHUUDOIQQIUBIUSGKKIURGKUVIUEGBAIHIKUEGABZIBGBZUSGOZAQUZMOZUVIUEIEIUDOOBUFGHTMBUGAZUIZIUGYGBVMBBIUVOUYMBUVAIOURMOHUGQQIHUGJITUTGUG UUTIKZUYAIBUTMEEIUMBUVAKGAZUVGBKUQIURGZMAKUVIUEGURGOJHIUEIHIUUDOAUVOUTOQUVOBUT AIBUKGEMOHMKIUAQUQOAURGHGAZUOBIUHMKIUKAUDOGBVUKMBURIZAZSAQKUIZGAZUOBURIOUIBH OEIUVOUTIHJIGOUIQQIURGHZGAZUQGUBOAZUEIEIUEGQGVIUGOUQAIOUVIUKIUTMOT IHURMOHUJMAHUKAQUBGJGAZUYIKMABUVIUHAIBUSGAKGBZUDOGZHIUQAIOIKUGURAIVUGJGBZUQIUPMOHUGSABUVIZHIUHIBZHIIURMOHUKMBUZHGJGAQUIBUHIJGBT IUTIUEIEIUGEMOHUVIKUKAIBKUIZUKMBUVIKAHUVGKKOHIHUQGUFHGBVIOHUSOZOHIUVIUKGUEGAKMBUKIUZHGVOAKGAZUVGBKUKGURMQAZADOIUGUQIFGHVUVIKUGOZHIKUVMEIKZADOIKURGHUOBIUEGWAEIUTMBKZGBZIUDOAUSOZUVIUBIBUPGEGAKUQGAKKIHUOBUKIOQUKAERQGBZIHUT IXUEGUZGBZIUDOIQQIUEIZZGAZUVGAQQIOHKUOBIUKMHZIUVMHFOIAQUGUBIUQGAKKIHUGRRHMT IHURGHURIHKMBBIURHISIHGBZUDOGBVUIQQIEIEIUIZGAZUEGQGVIUKIUHIQIJIHURMOHUQOAUVMBBIHUKMBUIGOUVIUJAT NURQOZMZUDOIUVIURIHEIZZHIUQGTTIKUVIUQGUT GEYHIUVIUKGUEGAZHIKKIUGUQGUSAQQIUVIUTOAKABIUIZUTMEEIUTIZU NEIBMRZIHIUMYKIHJIURGHUSGYHIUQGUFOIRIUSMOAKKIOKIUDOAURMOHUDOIUKIKURIZAZKUGRHIKUKGUEMHZUGAIBZUVIUQGUJAGBVIUSHGAT IUGUEGBFIHUGRRIQQIUQGBGZMEAIUGOUKITMOHKUVIUKGUTHOGOZIUIZUGNGBZUTGRZOHIUVIKUT GHGBTMBKUIZUVIKUGHGAFBIIKUQIOHURIHTIUGJITUOBUKGJMAHUIZUOBIUGVHIKKIUEIHJIAQQIOWUQIUTIBZHIUBIHJIOWUVMOUVIRIBVUQIUEMOJIEIBZUVIKURGZZIKUEGAKUBMBUQIKUGOZHIKUSMBTZAMBKUVIUQGUJAIUVIUSGTMBUDOIUQABKITZIURGHGQNKIURHIKUVODOIQUIQQIUVIRMKIUKIKUMIOSKUSMOHBAKKIUGOWUQGHJIKUDOGBVUIQQIKUITQMHMBZUOBUFAYAIHUVMTAQIUABMSSIBKASUABTGRGYQIUVIUSOAZIUMOUVIUHIKAKZGBTIUEGAKUBOQQIEIBZUSGAKGBVIUSHGBTMAKIUZHMOJGAZURMOHUKIHJAHUKGUJMQMBZIURIHEGBIBZIUVIUHIBVHIUQGUEGAKMBUABZIBGYQIUGUZMOZUVMEIKZADOIUVIKUHOKIKUKAUKGJGBZIKUIZUKAUAERAZMNGYQIKUDOIUYAIBUVIKUGBBIIKURQOKUZGHVUBMOKUGRRHAEIKUDOIUKAUTIZUIZIQGUBMOKUGJAMBKUEGBFIURHIKDOIUZMOKUQIKUPMOHKUVIKUGKRIHFIKUTIZGAZURGHTIUDOIUQIOHUMVIOHUVMBBGAZUGUQGURGOJHIUSAQQIUVIUTOAKABIUT GHFIIUVIUQIKUIRQOT IHUVIKUTHAKIKUVGKZ EIUVOBIUZIQQIUJAMQIBTIUDOIQQIUSOZUMYQAFIIUVIUSABAHURGHUKIBUGQQIH
-------- FIN ------
-
------ tri_ordre_desc -----
-UIGKABZHOQMVTERJSD FYPWNXCL
-----CLEF----
-G TVIDSYAWCORBMEFHKZQJLPNXU
-------- TEXTE DECHIFFREE -------
- CETTE BELRE OL XE DESCENDAIS AMMRENDRE UE PENL UE DINER ETAIT DEXA COPPENCE ET GRANCOISE COPPANDANT ALJ GORCES DE UA NATLRE DEVENLES SES AIDES COPPE DANS UES GEERIES OL UES QEANTS SE GONT ENQAQER COPPE CLISINIERS GRAMMAIT UA BOLIUUE DONNAIT A UA VAMELR DES MOPPES DE TERRE A ETLVER ET GAISAIT GINIR A MOINT MAR UE GEL UES CBEGSDOELVRE CLUINAIRES DAHORD MREMARES DANS DES RECIMIENTS DE CERAPISTES FLI AUUAIENT DES QRANDES CLVES PARPITES CBALDRONS ET MOISSONNIERES ALJ TERRINES MOLR UE QIHIER POLUES A MATISSERIE ET METITS MOTS DE CREPE EN MASSANT MAR LNE COUUECTION COPMUETE DE CASSEROUES DE TOLTES DIPENSIONS XE PARRETAIS A VOIR SLR UA TAHUE OL UA GIUUE DE CLISINE VENAIT DE UES ECOSSER UES METITS MOIS AUIQNES ET NOPHRES COPPE DES HIUUES VERTES DANS LN XEL  PAIS PON RAVISSEPENT ETAIT DEVANT UES ASMERQES TREPMEES DOLTREPER ET DE ROSE ET DONT UEMI GINEPENT MIQNOCBE DE PALVE ET DAZLR SE DEQRADE INSENSIHUEPENT XLSFLAL MIED  ENCORE SOLIUUE MOLRTANT DL SOU DE UELR MUANT  MAR DES IRISATIONS FLI NE SONT MAS DE UA TERRE IU PE SEPHUAIT FLE CES NLANCES CEUESTES TRABISSAIENT UES DEUICIELSES CREATLRES FLI SETAIENT APLSEES A SE PETAPORMBOSER EN UEQLPES ET FLI A TRAVERS UE DEQLISEPENT DE UELR CBAIR COPESTIHUE ET GERPE UAISSAIENT AMERCEVOIR EN CES COLUELRS NAISSANTES DALRORE EN CES EHALCBES DARCENCIEU EN CETTE EJTINCTION DE SOIRS HUELS CETTE ESSENCE MRECIELSE FLE XE RECONNAISSAIS ENCORE FLAND TOLTE UA NLIT FLI SLIVAIT LN DINER OL XEN AVAIS PANQE EUUES XOLAIENT DANS UELRS GARCES MOETIFLES ET QROSSIERES COPPE LNE GEERIE DE SBAKESMEARE A CBANQER PON MOT DE CBAPHRE EN LN VASE DE MARGLP UA MALVRE CBARITE DE QIOTTO COPPE UAMMEUAIT SWANN CBARQEE MAR GRANCOISE DE UES E MULPER L UES AVAIT MRES DEUUE DANS LNE CORHEIUUE SON AIR ETAIT DOLUOLRELJ COPPE SI EUUE RESSENTAIT TOLS UES PAUBELRS DE UA TERRE  ET UES UEQERES COLRONNES DAZLR FLI CEIQNAIENT UES ASMERQES ALDESSLS DE UELRS TLNIFLES DE ROSE ETAIENT GINEPENT DESSINEES ETOIUE MAR ETOIUE COPPE UE SONT DANS UA GRESFLE UES GUELRS HANDEES ALTOLR DL GRONT OL MIFLEES DANS UA CORHEIUUE DE UA VERTL DE MADOLE ET CEMENDANT GRANCOISE TOLRNAIT A UA HROCBE LN DE CES MOLUETS COPPE EUUE SELUE SAVAIT EN ROTIR FLI AVAIENT MORTE UOIN DANS COPHRAY UODELR DE SES PERITES ET FLI MENDANT FLEUUE NOLS UES SERVAIT A TAHUE GAISAIENT MREDOPINER UA DOLCELR DANS PA CONCEMTION SMECIAUE DE SON CARACTERE UAROPE DE CETTE CBAIR FLEUUE SAVAIT RENDRE SI ONCTLELSE ET SI TENDRE NETANT MOLR POI FLE UE MROMRE MARGLP DLNE DE SES VERTLS PAIS UE XOLR OL MENDANT FLE PON MERE CONSLUTAIT UE CONSEIU DE GAPIUUE SLR UA RENCONTRE DE UEQRANDIN XE DESCENDIS A UA CLISINE ETAIT LN DE CELJ OL UA CBARITE DE QIOTTO TRES PAUADE DE SON ACCOLCBEPENT RECENT NE MOLVAIT SE UEVER  GRANCOISE NETANT MULS AIDEE ETAIT EN RETARD FLAND XE GLS EN HAS EUUE ETAIT EN TRAIN DANS UARRIERECLISINE FLI DONNAIT SLR UA HASSECOLR DE TLER LN MOLUET FLI MAR SA RESISTANCE DESESMEREE ET HIEN NATLREUUE PAIS ACCOPMAQNEE MAR GRANCOISE BORS DEUUE TANDIS FLEUUE CBERCBAIT A ULI GENDRE UE COL SOLS UOREIUUE DES CRIS DE E SAUE HETE  SAUE HETE  L PETTAIT UA SAINTE DOLCELR ET UONCTION DE NOTRE SERVANTE LN MEL POINS EN ULPIERE FLIU NELT GAIT AL DINER DL UENDEPAIN MAR SA MEAL HRODEE DOR COPPE LNE CBASLHUE ET SON XLS MRECIELJ EQOLTTE DLN CIHOIRE FLAND IU GLT PORT GRANCOISE RECLEIUUIT UE SANQ FLI COLUAIT SANS NOYER SA RANCLNE ELT ENCORE LN SLRSALT DE COUERE ET REQARDANT UE CADAVRE DE SON ENNEPI DIT LNE DERNIERE GOIS  E SAUE HETE  L XE REPONTAI TOLT TREPHUANT  XALRAIS VOLUL FLON PIT GRANCOISE TOLT DE SLITE A UA MORTE PAIS FLI PELT GAIT DES HOLUES ALSSI CBALDES DL CAGE ALSSI MARGLPE ET PEPE CES MOLUETS  ET EN REAUITE CE UACBE CAUCLU TOLT UE PONDE AVAIT EL A UE GAIRE COPPE POI CAR PA TANTE UEONIE SAVAIT  CE FLE XIQNORAIS ENCORE  FLE GRANCOISE FLI MOLR SA GIUUE MOLR SES NEVELJ ALRAIT DONNE SA VIE SANS LNE MUAINTE ETAIT MOLR DALTRES ETRES DLNE DLRETE SINQLUIERE PAUQRE CEUA PA TANTE UAVAIT QARDEE CAR SI EUUE CONNAISSAIT SA CRLALTE EUUE AMMRECIAIT SON SERVICE XE PAMERCLS MEL A MEL FLE UA DOLCELR UA COPMONCTION UES VERTLS DE GRANCOISE CACBAIENT DES TRAQEDIES DARRIERECLISINE COPPE UBISTOIRE DECOLVRE FLE UES REQNES DES ROIS ET DES REINES FLI SONT REMRESENTES UES PAINS XOINTES DANS UES VITRALJ DES EQUISES GLRENT PARFLES DINCIDENTS SANQUANTS XE PE RENDIS COPMTE FLE EN DEBORS DE CELJ DE SA MARENTE UES BLPAINS EJCITAIENT DALTANT MULS SA MITIE MAR UELRS PAUBELRS FLIUS VIVAIENT MULS EUOIQNES DEUUE UES TORRENTS DE UARPES FLEUUE VERSAIT EN UISANT UE XOLRNAU SLR UES INGORTLNES DES INCONNLS SE TARISSAIENT VITE SI EUUE MOLVAIT SE REMRESENTER UA MERSONNE FLI EN ETAIT UOHXET DLNE GACON LN MEL MRECISE LNE DE CES NLITS FLI SLIVIRENT UACCOLCBEPENT DE UA GIUUE DE CLISINE CEUUECI GLT MRISE DATROCES COUIFLES  PAPAN UENTENDIT SE MUAINDRE SE UEVA ET REVEIUUA GRANCOISE FLI INSENSIHUE DECUARA FLE TOLS CES CRIS ETAIENT LNE COPEDIE FLEUUE VOLUAIT E GAIRE UA PAITRESSE L UE PEDECIN FLI CRAIQNAIT CES CRISES AVAIT PIS LN SIQNET DANS LN UIVRE DE PEDECINE FLE NOLS AVIONS A UA MAQE OL EUUES SONT DECRITES ET OL IU NOLS AVAIT DIT DE NOLS REMORTER MOLR TROLVER UINDICATION DES MREPIERS SOINS A DONNER PA PERE ENVOYA GRANCOISE CBERCBER UE UIVRE EN ULI RECOPPANDANT DE NE MAS UAISSER TOPHER UE SIQNET AL HOLT DLNE BELRE GRANCOISE NETAIT MAS REVENLE  PA PERE INDIQNEE CRLT FLEUUE SETAIT RECOLCBEE ET PE DIT DAUUER VOIR POIPEPE DANS UA HIHUIOTBEFLE XY TROLVAI GRANCOISE FLI AYANT VOLUL REQARDER CE FLE UE SIQNET PARFLAIT UISAIT UA DESCRIMTION CUINIFLE DE UA CRISE ET MOLSSAIT DES SANQUOTS PAINTENANT FLIU SAQISSAIT DLNE PAUADETYME FLEUUE NE CONNAISSAIT MAS  CBAFLE SYPMTOPE DOLUOLRELJ PENTIONNE MAR UALTELR DL TRAITE EUUE SECRIAIT BE UA  SAINTE VIERQE ESTIU MOSSIHUE FLE UE HON DIEL VELIUUE GAIRE SOLGGRIR AINSI LNE PAUBELRELSE CREATLRE BLPAINE  BE  UA MALVRE  PAIS DES FLE XE UELS AMMEUEE ET FLEUUE GLT REVENLE MRES DL UIT DE UA CBARITE DE QIOTTO SES UARPES CESSERENT ALSSITOT DE COLUER  EUUE NE MLT RECONNAITRE NI CETTE AQREAHUE SENSATION DE MITIE ET DATTENDRISSEPENT FLEUUE CONNAISSAIT HIEN ET FLE UA UECTLRE DES XOLRNALJ ULI AVAIT SOLVENT DONNEE NI ALCLN MUAISIR DE PEPE GAPIUUE DANS UENNLI ET DANS UIRRITATION DE SETRE UEVEE AL PIUIEL DE UA NLIT MOLR UA GIUUE DE CLISINE ET A UA VLE DES PEPES SOLGGRANCES DONT UA DESCRIMTION UAVAIT GAIT MUELRER EUUE NELT MULS FLE DES RONCBONNEPENTS DE PALVAISE BLPELR PEPE DAGGRELJ SARCASPES DISANT FLAND EUUE CRLT FLE NOLS ETIONS MARTIS ET NE MOLVIONS MULS UENTENDRE  E EUUE NAVAIT FLA NE MAS GAIRE CE FLIU GALT MOLR CA  CA ULI A GAIT MUAISIR  FLEUUE NE GASSE MAS DE PANIERES PAINTENANT GALTIU TOLT DE PEPE FLLN QARCON AIT ETE AHANDONNE DL HON DIEL MOLR AUUER AVEC CA AB  CEST HIEN COPPE ON DISAIT DANS UE MATOIS DE PA MALVRE PERE  FLI DL CLU DLN CBIEN SAPOLROSE IU ULI MARAIT LNE ROSE SI FLAND SON METITGIUS ETAIT LN MEL ENRBLPE DL CERVEAL EUUE MARTAIT UA NLIT PEPE PAUADE AL UIEL DE SE COLCBER MOLR VOIR SIU NAVAIT HESOIN DE RIEN GAISANT FLATRE UIELES A MIED AVANT UE XOLR AGIN DETRE RENTREE MOLR SON TRAVAIU EN REVANCBE CE PEPE APOLR DES SIENS ET SON DESIR DASSLRER UA QRANDELR GLTLRE DE SA PAISON SE TRADLISAIT DANS SA MOUITIFLE A UEQARD DES ALTRES DOPESTIFLES MAR LNE PAJIPE CONSTANTE FLI GLT DE NEN XAPAIS UAISSER LN SELU SIPMUANTER CBEZ PA TANTE FLEUUE PETTAIT DAIUUELRS LNE SORTE DORQLEIU A NE UAISSER AMMROCBER MAR MERSONNE MREGERANT FLAND EUUEPEPE ETAIT PAUADE SE REUEVER MOLR ULI DONNER SON EAL DE VICBY MULTOT FLE DE MERPETTRE UACCES DE UA CBAPHRE DE SA PAITRESSE A UA GIUUE DE CLISINE ET COPPE CET BYPENOMTERE OHSERVE MAR GAHRE UA QLEME GOLISSELSE FLI MOLR FLE SES METITS AMRES SA PORT AIENT DE UA VIANDE GRAICBE A PANQER AMMEUUE UANATOPIE AL SECOLRS DE SA CRLALTE ET AYANT CAMTLRE DES CBARANCONS ET DES ARAIQNEES UELR MERCE AVEC LN SAVOIR ET LNE ADRESSE PERVEIUUELJ UE CENTRE NERVELJ DOL DEMEND UE POLVEPENT DES MATTES PAIS NON UES ALTRES GONCTIONS DE UA VIE DE GACON FLE UINSECTE MARAUYSE MRES DLFLEU EUUE DEMOSE SES OELGS GOLRNISSE ALJ UARVES FLAND EUUES ECUORONT LN QIHIER DOCIUE INOGGENSIG INCAMAHUE DE GLITE OL DE RESISTANCE PAIS NLUUEPENT GAISANDE GRANCOISE TROLVAIT MOLR SERVIR SA VOUONTE MERPANENTE DE RENDRE UA PAISON INTENAHUE A TOLT DOPESTIFLE DES RLSES SI SAVANTES ET SI IPMITOYAHUES FLE HIEN DES ANNEES MULS TARD NOLS AMMRIPES FLE SI CET ETEUA NOLS AVIONS PANQE MRESFLE TOLS UES XOLRS DES ASMERQES CETAIT MARCE FLE UELR ODELR DONNAIT A UA MALVRE GIUUE DE CLISINE CBARQEE DE UES EMULCBER DES CRISES DASTBPE DLNE TEUUE VIOUENCE FLEUUE GLT OHUIQEE DE GINIR MAR SEN AUUER
-------- FIN -------
-</pre>
-
-
-
-<div id="org17670bc" class="figure">
+<div id="org83444f2" class="figure">
 <p><img src="https://www.apprendre-en-ligne.net/crypto/stat/batonsfr2.gif" alt="batonsfr2.gif" />
+</p>
+</div>
+
+<p>
+La longueur du texte est également un gros problème dans le décryptage sans clé car sur une phrase (voir 2<sup>nd</sup> test) il n&rsquo;apparait pas forcément toutes les lettres de l&rsquo;alphabet. C&rsquo;est pour cela que l&rsquo;on obtient des tests plus concluant avec des longs textes (voir 3<sup>eme</sup> test).
+</p>
+
+<p>
+Pour que notre programme soit plus efficace, on aurait pu étudier la probabilité d&rsquo;apparition d&rsquo;une lettre après une autre comme pour les lettres <i>q</i> et <i>u</i> qui se suivent tout le temps.
 </p>
 </div>
 </div>
 </div>
+
+<div id="outline-container-org865ee06" class="outline-2">
+<h2 id="org865ee06"><span class="section-number-2">3.</span> Bilan Général</h2>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Léa Lenglet</p>
-<p class="date">Created: 2022-04-11 lun. 17:28</p>
+<p class="date">Created: 2022-04-12 mar. 07:16</p>
 </div>
 </body>
 </html>
