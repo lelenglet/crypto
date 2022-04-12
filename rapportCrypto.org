@@ -569,3 +569,12 @@ tout le temps, ou encore la probabilité d'apparition d'une même lettre deux fo
 comme les /ll/, /ss/, /mm/, etc.
 
 * Bilan Général
+
+Nous avons pu constater lors de cette activité qu'il était assez aisé de casser une clef 
+par substitution, grâce à l'analyse des fréquences d'apparitions des lettres dans un texte.
+Bien que notre méthode ce soit montrée efficace surtout pour les textes de grande taille, 
+nous pensons qu'avec l'étude des fréquences des bigrammes (apparition d'une lettre après
+l'autre) il aurait été possible de décrypter des textes de longueur plus réduite. 
+Cependant nous pouvons nous rendre compte que le chiffrement par substitution n'est pas une
+méthode très sécurisée, comme la plupart des méthodes de chiffrement symétrique,
+contrairement aux méthodes de chiffrement asymétrique tel le chiffrement RSA.
