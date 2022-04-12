@@ -183,11 +183,7 @@ void tri_ordre_desc(float occ[], char app_txt[]){
       }
       occ[indice_max] = -1;
       app_txt[i] = alphabet[indice_max];
-      for (int k=0;k<N-1;k++){
-    printf("%c = %f | ",alphabet[k],occ[k]);
-    }
-    printf("\n");
-      printf("%c\n", app_txt[i]);
+      printf("%c", app_txt[i]);
   }
  app_txt[i+1] = ' ';
  printf("\n");
@@ -199,14 +195,9 @@ void clef_freq(char app_txt[], char clef[]){
   int indice;
   char app_fr[N];
   strcpy(app_fr, " EASINTRLUODCMPVGFBQHXJYZKW" );
-  //strcpy(app_fr," EASITNRUOLDCMPVQFBGHJXZYKW");
-  //strcpy(app_fr," EASINUTROLDMCPVQHFJBGXYZKW");
   while (app_fr[i] != '\0'){
     indice = indice_in_alpha(app_fr[i]);
-    printf("lettre %c | ", app_fr[i]);
-    printf("indice %d | ", indice);
     clef[indice] = app_txt[i];
-    printf("clef %c | \n",  clef[indice]);
     i++;
   }
   clef[i]='\0';
@@ -262,9 +253,9 @@ int main(){
     //chiffrement
     char sortie_chiffree[strlen(texte_propre)];
     Chiffrement(sortie_chiffree,texte_propre,permutation);
-    // printf("------- TEXTE CHIFFREE -------\n");
-    //printf("%s\n",sortie_chiffree);
-    //printf("------- FIN ------\n");
+    printf("------- TEXTE CHIFFREE -------\n");
+    printf("%s\n",sortie_chiffree);
+    printf("------- FIN ------\n");
     
     //dechiffrement
     /* char sortie_dechiffree[strlen(texte_propre)];
