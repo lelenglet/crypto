@@ -153,20 +153,16 @@ void occurence(float tab[],char text[]){
     int indice;
     while (text[i]!='\0'){
         indice=indice_in_alpha(text[i]);
-
         tab[indice]+=1;
         nb_carac++;
         i++;
     }
     for (i=0;i<N-1;i++){
-        tab[i]=(tab[i]/nb_carac) * 100;
+        tab[i]=tab[i]/nb_carac;
     }
 }
 
 //////////////////// FONCTION 6 : DECRYPTAGE //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/* Fréquences d'apparition des lettres par ordre décroissant de fréquence:
-"EASINTRLUODCPMVGFBQHXJYZKW"*/
 
 void tri_ordre_desc(float occ[], char app_txt[]){
   int i = 0, j;
@@ -187,31 +183,15 @@ void tri_ordre_desc(float occ[], char app_txt[]){
       }
       occ[indice_max] = -1;
       app_txt[i] = alphabet[indice_max];
-      printf("%c", app_txt[i]);
+      for (int k=0;k<N-1;k++){
+    printf("%c = %f | ",alphabet[k],occ[k]);
+    }
+    printf("\n");
+      printf("%c\n", app_txt[i]);
   }
  app_txt[i+1] = ' ';
  printf("\n");
 
-
- /*
-  while (occ[i+1] != '\0'){
-    max_occ = occ[i];
-    indice_max = i;
-    j = 0;
-    while (occ[j+1] != '\0'){
-      if (occ[j] > max_occ){
-	max_occ = occ[j];
-	indice_max = j;
-      }
-      j++;
-    }
-    occ[indice_max] = -1;
-    app_txt[i] = alphabet[indice_max];
-    printf("%c", app_txt[i]);
-    i++;
-  }
-  app_txt[i+1] = ' ';
-  printf("\n");*/
 }
 
 void clef_freq(char app_txt[], char clef[]){
@@ -223,10 +203,10 @@ void clef_freq(char app_txt[], char clef[]){
   //strcpy(app_fr," EASINUTROLDMCPVQHFJBGXYZKW");
   while (app_fr[i] != '\0'){
     indice = indice_in_alpha(app_fr[i]);
-    //printf("lettre %c\n", app_fr[i]);
-    //printf("indice %d\n", indice);
+    printf("lettre %c | ", app_fr[i]);
+    printf("indice %d | ", indice);
     clef[indice] = app_txt[i];
-    //printf("clef %c\n",  clef[indice]);
+    printf("clef %c | \n",  clef[indice]);
     i++;
   }
   clef[i]='\0';
@@ -235,7 +215,7 @@ void clef_freq(char app_txt[], char clef[]){
 }
 
 void Decryptage(char sortie[], char text[]){
-  float freq[N-1];
+float freq[N-1]={0};
   char app_txt[N];
   char clef[N];
 
@@ -256,6 +236,7 @@ int main(){
     int i;
     char alphabet[N];
     strcpy(alphabet, "ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
+    printf("%s\n",alphabet);
     //permutation
     char permutation[N];
     Permutation(permutation);
@@ -263,7 +244,7 @@ int main(){
     printf("%s\n",permutation);
 
     //nettoyage
-    char text[]="BONJOUR";
+    char text[]="Bonjour à tous !";
     /*printf("%s\n",text);*/
     char texte_propre[strlen(text)];
     Nettoyage(texte_propre,text);
@@ -299,38 +280,3 @@ int main(){
     
     return 0;
 }
-
-
-
-/*
-**
-int main(int argc, char *argv[])
-{
-
-    char chaine[] = "Texte";
-    char* copie=NULL;
-
-    copie = copieur(chaine);
-
-
-    printf("chaine vaut : %s\n", chaine);
-    printf("copie vaut : %s\n", copie);
-     free(copie);
- 
-    return 0;
-
-}
-
-char* copieur(const char *originale)
-{
-
-     char *copie=NULL;
-
-    copie=malloc((strlen(originale)+1)*sizeof(char));
-    strcpy(copie,originale);
-
-   return copie;
-}
-**
-**
-*/
