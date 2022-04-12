@@ -29,7 +29,6 @@ original
 #+attr_html: :width 350px
 [[https://www.frenchweb.fr/wp-content/uploads/2016/09/code-secret.jpg]]
 
-
 * Résolution
 ** Méthodologie
 Afin d'organiser notre travail efficacement, nous avons répartis les tâches de la manière suivante :
@@ -55,7 +54,7 @@ void Permutation(char sortie[]){
     int random;
     char alphabet[N];
     strcpy(alphabet,"ABCDEFGHIJKLMNOPQRSTUVWXYZ ");
-    strcpy(sortie,alphabet);//alphabet de départ copié dans la sortie
+    strcpy(sortie,alphabet);// alphabet de départ copié dans la sortie
     char temp;
 
     for (i=strlen(sortie)-1; i>1; i--){ // longueur-1 pour exclure la dernière case contenant '/0' de la permutation
@@ -81,8 +80,6 @@ int indice_in_alpha(char carac){
         indice++;
     }
     return indice;
-    //fonction permettant de trouver l'indice du carac dans l'alaphabet
-    //retourne indice
 }
 #+END_SRC
 
@@ -99,13 +96,11 @@ void Chiffrement(char sortie[], char text[], char clef[]){
     int indice;
     while (text[i]!='\0'){
         indice=indice_in_alpha(text[i]);
-        sortie[i]=clef[indice];
-        i++;
+        sortie[i]=clef[indice];// on prends le caractère et on le remplace avec le caractère associé dans la clef de chiffrement
+        // le message chiffré est stocké par effet de bord dans la variable sortie
+	i++;
     }
     sortie[i]='\0';
-    // on parcourt le texte avec une boucle tant que text[i]!='\0'
-    // on prends le caractère et on le remplace avec le caractère associé dans la clef de chiffrement
-    // le message chiffré est stocké par effet de bord dans la variable sortie
 }
 #+END_SRC
 
@@ -123,8 +118,6 @@ int indice_in_clef(char clef[],char carac){
         indice++;
     }
     return indice;
-    //fonction permettant de trouver l'indice du carac dans l'alaphabet
-    //retourne indice
 }
 #+END_SRC
 
@@ -148,6 +141,8 @@ void Dechiffrement(char sortie[], char text[], char clef[]){
     while (text[i]!='\0'){
         indice=indice_in_clef(clef,text[i]);
         sortie[i]=alphabet[indice];
+	sortie[i]=clef[indice];
+        // le message déchiffré est stocké par effet de bord dans la variable sortie
         i++;
     }
     sortie[i]='\0';
@@ -172,10 +167,10 @@ char Changement_carac(char carac){
     char sortie='.'; // le cas ou il ne trouve pas des exceptions
     if ((carac<'a' || carac>'z')&& (carac<'A' ||carac>'Z') && carac!=' '){
         if (carac==-96 || carac==-94 || carac==-92 ){
-                sortie='A'; //remplacer à â ä
+                sortie='A'; // remplacer à â ä
         }
         else if (carac>=-88 && carac<=-85){
-            sortie='E'; //remplacer é è ê ë
+            sortie='E'; //r emplacer é è ê ë
         }
         else if (carac==-89){
             sortie='C'; // remplacer ç
@@ -183,10 +178,10 @@ char Changement_carac(char carac){
         else if (carac==-71 || carac ==-69 || carac==-68){ // remplacer ù û ü
             sortie='U';
         }
-        else if (carac==-76 || carac==-74){//remplacer ô ö
+        else if (carac==-76 || carac==-74){// remplacer ô ö
             sortie='O';
         }
-        else if (carac==-82 || carac==-81){//remplacer î ï
+        else if (carac==-82 || carac==-81){// remplacer î ï
             sortie='I';
         }
         else if (carac==':' || carac=='!' || carac=='?' || carac==',' || carac=='.' || carac=='\'' || carac=='-' || carac=='(' ||carac==')' || carac== '[' || carac==']'){
@@ -220,20 +215,20 @@ void  Nettoyage(char sortie[],char text[]){
     char temp;
     while (text[i]!='\0'){
         temp=Changement_carac(text[i]);
-        if (temp!='.'){
+        if (temp!='.'){ // les caractères spéciaux sont ignorés
             sortie[j]=temp;
             j++;
         }
         i++;
     }
-    sortie[j]='\0'; //je rajoute '\0' pour éviter l'apparition de caractère non désiré
+    sortie[j]='\0'; // je rajoute '\0' pour éviter l'apparition de caractère non désiré
 }
 #+END_SRC
 
 Problème survenu lors de l’implémentation :
 
 Les caractères accentués sont représentés par deux caractères dans une chaine au lieu d'un seul.
-Lors de plusieurs tests sur différents caractères de ce type, nous nous sommes rendus compte que la valeur du premier caractère est le même pour tous les caractères accentués tandis que le second caractère est représenté par un entier négatif distinct. Pour empêcher l'ajout d'un caractère supplémentaire indésirable dans la chaine de sortie nous avons décider de choisir le caractère '.' comme valeur à ignorer.
+Lors de plusieurs tests sur différents caractères de ce type, nous nous sommes rendus compte que la valeur du premier caractère est la même pour tous les caractères accentués tandis que le second caractère est représenté par un entier négatif distinct. Pour empêcher l'ajout d'un caractère supplémentaire indésirable dans la chaine de sortie nous avons décider de choisir le caractère '.' comme valeur à ignorer.
 
 *** Occurence
 Nous créons une fonction /occurence/, qui prend comme arguments un tableau de flottants
@@ -248,19 +243,19 @@ lettres de notre texte.
 
 #+NAME: occurence
 #+BEGIN_SRC C :results none :noweb yes
-void occurence(float tab[],char text[]){
+void occurence(float tabOcc[],char text[]){
     int i=0;
     int nb_carac=1;
     int indice;
     while (text[i]!='\0'){
         indice=indice_in_alpha(text[i]);
 
-        tab[indice]+=1;
+        tabOcc[indice]+=1;
         nb_carac++;
         i++;
     }
     for (i=0;i<N-1;i++){
-        tab[i]=(tab[i]/nb_carac) * 100;
+        tabOcc[i]=(tabOcc[i]/nb_carac) * 100; // multiplier par 100 nous permet de rendre plus lisible la table des occurences
     }
 }
 
@@ -297,10 +292,9 @@ void tri_ordre_desc(float occ[], char app_txt[]){
               max_occ = occ[j];
               indice_max = j;
           }
-
       }
-      occ[indice_max] = -1;
-      app_txt[i] = alphabet[indice_max];
+      occ[indice_max] = -1; // je passe l'occurence à -1 pour ne plus la prendre en compte
+      app_txt[i] = alphabet[indice_max]; 
       printf("%c", app_txt[i]);
   }
  app_txt[i+1] = '\0';
@@ -315,7 +309,7 @@ second tableau de caractères ~clef~ dans lequel nous allons stocker notre clef 
 pouvoir décrypter notre texte grâce à la fonction ~dechiffrement~. \\
 On initialise une variable ~app_fr~ dans laquelle nous allons stocker l'alphabet dans
 l'ordre décroissant d'occurence dans la langue française. Nous allons ensuite remplir notre
-clef de la façon suivante : on parcours ~app_txt~, et pour chaque lettre de ~app_txt~, on
+clef de la façon suivante : on parcours ~app_fr~, et pour chaque lettre de ~app_fr~, on
 prend son indice dans l'alphabet et on affecte à ~clef[indice]~ la lettre au même indice
 que ~app_txt~. Cela nous donne la clef de chiffrement (plus ou moins fiable en fonction de
 la table d'occurences et donc de la taille du texte), dont nous allons nous servir pour 
@@ -328,8 +322,9 @@ void clef_freq(char app_txt[], char clef[]){
   int indice;
   char app_fr[N];
   strcpy(app_fr, " EASINTRLUODCPMVGFBQHXJYZKW" );
+
   while (app_fr[i] != '\0'){
-    indice = indice_in_alpha(app_fr[i]);
+    indice = indice_in_alpha(app_fr[i]); 
     clef[indice] = app_txt[i];
     i++;
   }
@@ -338,6 +333,18 @@ void clef_freq(char app_txt[], char clef[]){
   printf("%s\n\n", clef);
 }
 #+END_SRC
+
+Notre fonction ~decryptage~ prend comme argument un tableau de caractères /sortie/, dans 
+lequel nous allons stocker notre texte décrypté, ainsi qu'un tableau de caractères /text/
+qui contient notre texte à décrypter. \\
+Nous initialisons un tableau de flottants *freq* dans lequel nous allons stocker les 
+occurences des lettres de notre *text*, un tableau de caractères *app_txt*, qui va contenir
+les lettres de l'alphabet dans l'ordre décroissant d'occurences du *text*, ainsi qu'un 
+tableau de caractères *clef* dans lequel nous allons stocker notre clef de substitution 
+obtenue grâce à la fonction /clef_freq/ définie ci-dessus. \\
+Nous faisons appelle à quatre des fonctions définies précedemment, /occurence/, 
+/tri_ordre_desc/, /clef_freq/ et /Dechiffrement/. Grâce à celles-ci, nous devons obtenir
+notre *text* décrypté dans *sortie*.
 
 #+NAME: decryptage
 #+BEGIN_SRC C :results none :noweb yes
@@ -364,29 +371,29 @@ void Decryptage(char sortie[], char text[]){
 
 #define N 28 // longueur pour l'alphabet
 
-////// FONCTION 1 : PERMUTATION ////
+//////////////////// FONCTION 1 : PERMUTATION ////////////////////
 <<permutation>>
 
-////// FONCTION 2 : CHIFFREMENT ////
+//////////////////// FONCTION 2 : CHIFFREMENT ////////////////////
 <<indice_in_alpha>>
 
 <<chiffrement>>
 
-//// FONCTION 3 : DECHIFFREMENT ////
+//////////////////// FONCTION 3 : DECHIFFREMENT ////////////////////
 <<indice_in_clef>>
 
 <<dechiffrement>>
 
-//// FONCTION 4 : NETTOYAGE ////
+//////////////////// FONCTION 4 : NETTOYAGE ////////////////////
 <<changement_carac>>
 
 <<nettoyage>>
 
-//// FONCTION 5 : OCCURENCE ////
+//////////////////// FONCTION 5 : OCCURENCE ////////////////////
 <<occurence>>
 
 
-//////////////////// FONCTION 6 : DECRYPTAGE //////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////// FONCTION 6 : DECRYPTAGE ////////////////////
 <<tri_ordre_desc>>
 
 <<clef_freq>>
@@ -447,12 +454,7 @@ int main(){
 
     return 0;
 }
-
-
 #+END_SRC
-
-
-
 
 * Plusieurs tests
 ** Texte court
@@ -515,7 +517,6 @@ YMUV NPKXEBGSOWTLIQJZRAHDCF
 
 #+end_example
 
-
 ** Texte long
 #+CALL: phrase(montext="À Madame la Princesse Alexandre de Caraman-Chimay, dont les Notes sur Florence auraient fait les délices de Ruskin, je dédie respectueusement, comme un hommage de ma profonde admiration pour elle, ces pages que j’ai recueillies parce qu’elles lui ont plu.M. P. Il n’y a peut-être pas de jours de notre enfance que nous ayons si pleinement vécus que ceux que nous avons cru laisser sans les vivre, ceux que nous avons passés avec un livre préféré. Tout ce qui, semblait-il, les remplissait pour les autres, et que nous écartions comme un obstacle vulgaire à un plaisir divin : le jeu pour lequel un ami venait nous chercher au passage le plus intéressant, l’abeille ou le rayon de soleil gênants qui nous forçaient à lever les yeux de la page ou à changer de place, les provisions de goûter qu’on nous avait fait emporter et que nous laissions à côté de nous sur le banc, sans y toucher, tandis que, au-dessus de notre tête, le soleil diminuait de force dans le ciel bleu, le dîner pour lequel il avait fallu rentrer et où nous ne pensions qu’à monter finir, tout de suite après, le chapitre interrompu, tout cela, dont la lecture aurait dû nous empêcher de percevoir autre chose que l’importunité, elle en gravait au contraire en nous un souvenir tellement doux (tellement plus précieux à notre jugement actuel que ce que nous lisions alors avec tant d’amour,) que, s’il nous arrive encore aujourd’hui de feuilleter ces livres d’autrefois, ce n’est plus que comme les seuls calendriers que nous ayons gardés des jours enfuis, et avec l’espoir de voir reflétés sur leurs pages les demeures et les étangs qui n’existent plus.Qui ne se souvient comme moi de ces lectures faites au temps des vacances, qu’on allait cacher successivement dans toutes celles des heures du jour qui étaient assez paisibles et assez inviolables pour pouvoir leur donner asile. Le matin, en rentrant du parc, quand tout le monde était parti « faire une promenade », je me glissais dans la salle à manger, où, jusqu’à l’heure encore lointaine du déjeuner, personne n’entrerait que la vieille Félicie relativement silencieuse, et où je n’aurais pour compagnons, très respectueux de la lecture, que les assiettes peintes accrochées au mur, le calendrier dont la feuille de la veille avait été fraîchement arrachée, la pendule et le feu qui parlent sans demander qu’on leur réponde et dont les doux propos vides de sens ne viennent pas, comme les paroles des hommes, en substituer un différent à celui des mots que vous lisez. Je m’installais sur une chaise, près du petit feu de bois, dont, pendant le déjeuner, l’oncle matinal et jardinier dirait : Il ne fait pas de mal ! On supporte très bien un peu de feu ; je vous assure qu’à six heures il faisait joliment froid dans le potager. Et dire que c’est dans huit jours Pâques ! Avant le déjeuner qui, hélas ! mettrait fin à la lecture, on avait encore deux grandes heures. De temps en temps, on entendait le bruit de la pompe d’où l’eau allait découler et qui vous faisait lever les yeux vers elle et la regarder à travers la fenêtre fermée, là, tout près, dans l’unique allée du jardinet qui bordait de briques et de faïences en demi-lunes ses plates-bandes de pensées : des pensées cueillies, semblait-il, dans ces ciels trop beaux, ces ciels versicolores et comme reflétés des vitraux de l’église qu’on voyait parfois entre les toits du village, ciels tristes qui apparaissaient avant les orages, ou après, trop tard, quand la journée allait finir. Malheureusement la cuisinière venait longtemps d’avance mettre le couvert ; si encore elle l’avait mis sans parler ! Mais elle croyait devoir dire :  Vous n’êtes pas bien comme cela ; si je vous approchais une table ?  Et rien que pour répondre :  Non, merci bien , il fallait arrêter net et ramener de loin sa voix qui, en dedans des lèvres, répétait sans bruit, en courant, tous les mots que les yeux avaient lus ; il fallait l’arrêter, la faire sortir, et, pour dire convenablement : Non, merci bien , lui donner une apparence de vie ordinaire, une intonation de réponse, qu’elle avait perdues. L’heure passait ; souvent, longtemps avant le déjeuner, commençaient à arriver dans la salle à manger ceux qui, étant fatigués, avaient abrégé la promenade, avaient « pris par Méséglise », ou ceux qui n’étaient pas sortis ce matin-là,  ayant à écrire . Ils disaient bien :  Je ne veux pas te déranger , mais commençaient aussitôt à s’approcher du feu, à consulter l’heure, à déclarer que le déjeuner ne serait pas mal accueilli. On entourait d’une particulière déférence celui ou celle qui était  restée à écrire  et on lui disait : Vous avez fait votre petite correspondance avec un sourire où il y avait du respect, du mystère, de la paillardise et des ménagements, comme si cette « petite correspondance » avait été à la fois un secret d’État, une prérogative, une bonne fortune et une indisposition. Quelques-uns, sans plus attendre, s’asseyaient d’avance à table, à leurs places. Cela, c’était la désolation, car ce serait d’un mauvais exemple pour les autres arrivants, aller faire croire qu’il était déjà midi, et prononcer trop tôt à mes parents la parole fatale : « Allons, ferme ton livre, on va déjeuner. » Tout était prêt, le couvert était entièrement mis sur la nappe où manquait seulement ce qu’on n’apportait qu’à la fin du repas, l’appareil en verre où l’oncle horticulteur et cuisinier faisait lui-même le café à table, tubulaire et compliqué comme un instrument de physique qui aurait senti bon et où c’était si agréable de voir monter dans la cloche de verre l’ébullition soudaine qui laissait ensuite aux parois embuées une cendre odorante et brune ; et aussi la crème et les fraises que le même oncle mêlait, dans des proportions toujours identiques, s’arrêtant juste au rose qu’il fallait avec l’expérience d’un coloriste et la divination d’un gourmand. Que le déjeuner me paraissait long ! Ma grand’tante ne faisait que goûter aux plats pour donner son avis avec une douceur qui supportait, mais n’admettait pas la contradiction. Pour un roman, pour des vers, choses où elle se connaissait très bien, elle s’en remettait toujours, avec une humilité de femme, à l’avis de plus compétents. Elle pensait que c’était là le domaine flottant du caprice où le goût d’un seul ne peut pas fixer la vérité. Mais sur les choses dont les règles et les principes lui avaient été enseignés par sa mère, sur la manière de faire certains plats, de jouer les sonates de Beethoven et de recevoir avec amabilité, elle était certaine d’avoir une idée juste de la perfection et de discerner si les autres s’en rapprochaient plus ou moins. Pour les trois choses, d’ailleurs, la perfection était presque la même : c’était une sorte de simplicité dans les moyens, de sobriété et de charme. Elle repoussait avec horreur qu’on mît des épices dans les plats qui n’en exigent pas absolument, qu’on jouât avec affectation et abus de pédales, qu’en « recevant » on sortît d’un naturel parfait et parlât de soi avec exagération. Dès la première bouchée, aux premières notes, sur un simple billet, elle avait la prétention de savoir si elle avait affaire à une bonne cuisinière, à un vrai musicien, à une femme bien élevée. « Elle peut avoir beaucoup plus de doigts que moi, mais elle manque de goût en jouant avec tant d’emphase cet andante si simple. » « Ce peut être une femme très brillante et remplie de qualités, mais c’est un manque de tact de parler de soi en cette circonstance. » « Ce peut être une cuisinière très savante, mais elle ne sait pas faire le bifteck aux pommes. » Le bifteck aux pommes ! morceau de concours idéal, difficile par sa simplicité même, sorte de « Sonate pathétique » de la cuisine, équivalent gastronomique de ce qu’est dans la vie sociale la visite de la dame qui vient vous demander des renseignements sur un domestique et qui, dans un acte si simple, peut à tel point faire preuve, ou manquer, de tact et d’éducation. Mon grand-père avait tant d’amour-propre qu’il aurait voulu que tous les plats fussent réussis, et s’y connaissait trop peu en cuisine pour jamais savoir quand ils étaient manqués. Il voulait bien admettre qu’ils le fussent parfois, très rarement d’ailleurs, mais seulement par un pur effet du hasard. Les critiques toujours motivées de ma grand’tante impliquant au contraire que la cuisinière n’avait pas su faire tel plat, ne pouvaient manquer de paraître particulièrement intolérables à mon grand-père. Souvent, pour éviter des discussions avec lui, ma grand’tante, après avoir goûté du bout des lèvres, ne donnait pas son avis, ce qui, d’ailleurs, nous faisait connaître immédiatement qu’il était défavorable. Elle se taisait, mais nous lisions dans ses yeux doux une désapprobation inébranlable et réfléchie qui avait le don de mettre mon grand-père en fureur. Il la priait ironiquement de donner son avis, s’impatientait de son silence, la pressait de questions, s’emportait, mais on sentait qu’on l’aurait conduite au martyre plutôt que de lui faire confesser la croyance de mon grand-père : que l’entremets n’était pas trop sucré. Après le déjeuner, ma lecture reprenait tout de suite ; surtout si la journée était un peu chaude, on montait « se retirer dans sa chambre », ce qui me permettait, par le petit escalier aux marches rapprochées, de gagner tout de suite la mienne, à l’unique étage si bas que des fenêtres enjambées on n’aurait eu qu’un saut d’enfant à faire pour se trouver dans la rue. J’allais fermer ma fenêtre, sans avoir pu esquiver le salut de l’armurier d’en face, qui, sous prétexte de baisser ses auvents, venait tous les jours après déjeuner fumer sa pipe devant sa porte et dire bonjour aux passants, qui, parfois, s’arrêtaient à causer. Les théories de William Morris, qui ont été si constamment appliquées par Maple et les décorateurs anglais, édictent qu’une chambre n’est belle qu’à la condition de contenir seulement des choses qui nous soient utiles et que toute chose utile, fût-ce un simple clou, soit non pas dissimulée, mais apparente. Au-dessus du lit à tringles de cuivre et entièrement découvert, aux murs nus de ces chambres hygiéniques, quelques reproductions de chefs-d’oeuvre. À la juger d’après les principes de cette esthétique, ma chambre n’était nullement belle, car elle était pleine de choses qui ne pouvaient servir à rien et qui dissimulaient pudiquement, jusqu’à en rendre l’usage extrêmement difficile, celles qui servaient à quelque chose. Mais c’est justement de ces choses qui n’étaient pas là pour ma commodité, mais semblaient y être venues pour leur plaisir, que ma chambre tirait pour moi sa beauté. Ces hautes courtines blanches qui dérobaient aux regards le lit placé comme au fond d’un sanctuaire ; la jonchée de couvre-pieds en marceline, de courtes-pointes à fleurs, de couvre-lits brodés, de taies d’oreillers en batiste, sous laquelle il disparaissait le jour, comme un autel au mois de Marie sous les festons et les fleurs, et que, le soir, pour pouvoir me coucher, j’allais poser avec précaution sur un fauteuil où ils consentaient à passer la nuit ; à côté du lit, la trinité du verre à dessins bleus, du sucrier pareil et de la carafe (toujours vide depuis le lendemain de mon arrivée sur l’ordre de ma tante qui craignait de me la voir « répandre »), sortes d’instruments du culte – presque aussi saints que la précieuse liqueur de fleur d’oranger placée près d’eux dans une ampoule de verre – que je n’aurais pas cru plus permis de profaner ni même possible d’utiliser pour mon usage personnel que si ç’avaient été des ciboires consacrés, mais que je considérais longuement avant de me déshabiller, dans la peur de les renverser par un faux mouvement ; ces petites étoles ajourées au crochet qui jetaient sur le dos des fauteuils un manteau de roses blanches qui ne devaient pas être sans épines puisque, chaque fois que j’avais fini de lire et que je voulais me lever, je m’apercevais que j’y étais resté accroché ; cette cloche de verre, sous laquelle, isolée des contacts vulgaires, la pendule bavardait dans l’intimité pour des coquillages venus de loin et pour une vieille fleur sentimentale, mais qui était si lourde à soulever que, quand la pendule s’arrêtait, personne, excepté l’horloger, n’aurait été assez imprudent pour entreprendre de la remonter ; cette blanche nappe en guipure qui, jetée comme un revêtement d’autel sur la commode ornée de deux vases, d’une image du Sauveur et d’un buis bénit, la faisait ressembler à la Sainte Table (dont un prie-Dieu, rangé là tous les jours, quand on avait « fini la chambre , achevait d’évoquer l’idée, mais dont les effilochements toujours engagés dans la fente des tiroirs en arrêtaient si complètement le jeu que je ne pouvais jamais prendre un mouchoir sans faire tomber d’un seul coup image du Sauveur, vases sacrés, buis bénit, et sans trébucher moi-même en me rattrapant au prie-Dieu ; cette triple superposition enfin de petits rideaux d’étamine, de grands rideaux de mousseline et de plus grands rideaux de basin, toujours souriants dans leur blancheur d’aubépine souvent ensoleillée, mais au fond bien agaçants dans leur maladresse et leur entêtement à jouer autour de leurs barres de bois parallèles et à se prendre les uns dans les autres et tous dans la fenêtre dès que je voulais l’ouvrir ou la fermer, un second étant toujours prêt, si je parvenais à en dégager un premier, à venir prendre immédiatement sa place dans les jointures aussi parfaitement bouchées par eux qu’elles l’eussent été par un buisson d’aubépines réelles ou par des nids d’hirondelles qui auraient eu la fantaisie de s’installer là, de sorte que cette opération, en apparence si simple, d’ouvrir ou de fermer ma croisée, je n’en venais jamais à bout sans le secours de quelqu’un de la maison ; toutes ces choses, qui non seulement ne pouvaient répondre à aucun de mes besoins, mais apportaient même une entrave, d’ailleurs légère, à leur satisfaction, qui évidemment n’avaient jamais été mises là pour l’utilité de quelqu’un, peuplaient ma chambre de pensées en quelque sorte personnelles, avec cet air de prédilection, d’avoir choisi de vivre là et de s’y plaire, qu’ont souvent, dans une clairière, les arbres, et, au bord des chemins ou sur les vieux murs, les fleurs. Elles la remplissaient d’une vie silencieuse et diverse, d’un mystère où ma personne se trouvait à la fois perdue et charmée ; elles faisaient de cette chambre une sorte de chapelle où le soleil – quand il traversait les petits carreaux rouges que mon oncle avait intercalés au haut des fenêtres – piquait sur les murs, après avoir rosé l’aubépine des rideaux, des lueurs aussi étranges que si la petite chapelle avait été enclose dans une plus grande nef à vitraux ; et où le bruit des cloches arrivait si retentissant à cause de la proximité de notre maison et de l’église, à laquelle d’ailleurs, aux grandes fêtes, les reposoirs nous liaient par un chemin de fleurs, que je pouvais imaginer qu’elles étaient sonnées dans notre toit, juste au-dessus de la fenêtre d’où je saluais souvent le curé tenant son bréviaire, ma tante revenant de vêpres ou l’enfant de choeur qui nous portait du pain bénit. Quant à la photographie par Brown du Printemps de Botticelli ou au moulage de la Femme inconnue du musée de Lille, qui, aux murs et sur la cheminée des chambres de Maple, sont la part concédée par William Morris à l’inutile beauté, je dois avouer qu’ils étaient remplacés dans ma chambre par une sorte de gravure représentant le prince Eugène, terrible et beau dans son dolman, et que je fus très étonné d’apercevoir une nuit, dans un grand fracas de locomotives et de grêle, toujours terrible et beau, à la porte d’un buffet de gare, où il servait de réclame à une spécialité de biscuits. Je soupçonne aujourd’hui mon grand-père de l’avoir autrefois reçu, comme prime, de la munificence d’un fabricant, avant de l’installer à jamais dans ma chambre. Mais alors je ne me souciais pas de son origine, qui me paraissait historique et mystérieuse et je ne m’imaginais pas qu’il pût y avoir plusieurs exemplaires de ce que je considérais comme une personne, comme un habitant permanent de la chambre que je ne faisais que partager avec lui et où je le retrouvais tous les ans, toujours pareil à lui-même. Il y a maintenant bien longtemps que je ne l’ai vu, et je suppose que je ne le reverrai jamais. Mais si une telle fortune m’advenait, je crois qu’il aurait bien plus de choses à me dire que le Printemps de Botticelli. Je laisse les gens de goût orner leur demeure avec la reproduction des chefs-d’oeuvre qu’ils admirent et décharger leur mémoire du soin de leur conserver une image précieuse en la confiant à un cadre de bois sculpté. Je laisse les gens de goût faire de leur chambre l’image même de leur goût et la remplir seulement de choses qu’il puisse approuver. Pour moi, je ne me sens vivre et penser que dans une chambre où tout est la création et le langage de vies profondément différentes de la mienne, d’un goût opposé au mien, où je ne retrouve rien de ma pensée consciente, où mon imagination s’exalte en se sentant plongée au sein du non-moi ; je ne me sens heureux qu’en mettant le pied – avenue de la Gare, sur le Port ou place de l’Église – dans un de ces hôtels de province aux longs corridors froids où le vent du dehors lutte avec succès contre les efforts du calorifère, où la carte de géographie détaillée de l’arrondissement est encore le seul ornement des murs, où chaque bruit ne sert qu’à faire apparaître le silence en le déplaçant, où les chambres gardent un parfum de renfermé que le grand air vient laver, mais n’efface pas, et que les narines aspirent cent fois pour l’apporter à l’imagination, qui s’en enchante, qui le fait poser comme un modèle pour essayer de le recréer en elle avec tout ce qu’il contient de pensées et de souvenir ; où le soir, quand on ouvre la porte de sa chambre, on a le sentiment de violer toute la vie qui y est restée éparse, de la prendre hardiment par la main quand, la porte refermée, on entre plus avant, jusqu’à la table ou jusqu’à la fenêtre ; de s’asseoir dans une sorte de libre promiscuité avec elle sur le canapé exécuté par le tapissier du chef-lieu dans ce qu’il croyait le goût de Paris ; de toucher partout la nudité de cette vie dans le dessein de se troubler soi-même par sa propre familiarité, en posant ici et là ses affaires, en jouant le maître dans cette chambre pleine jusqu’aux bords de l’âme des autres et qui garde jusque dans la forme des chenets et le dessin des rideaux l’empreinte de leur rêve, en marchant pieds nus sur son tapis inconnu ; alors, cette vie secrète, on a le sentiment de l’enfermer avec soi quand on va, tout tremblant, tirer le verrou ; de la pousser devant soi dans le lit et de coucher enfin avec elle dans les grands draps blancs qui vous montent par-dessus la figure, tandis que, tout près, l’église sonne pour toute la ville les heures d’insomnie des mourants et des amoureux. Je n’étais pas depuis bien longtemps à lire dans ma chambre qu’il fallait aller au parc, à un kilomètre du village. [Note. Ce que nous appelions, je ne sais pourquoi, un village est un chef-lieu de canton auquel le Guide Joanne donne près de 3000 habitants.] Mais après le jeu obligé, j’abrégeais la fin du goûter apporté dans des paniers et distribué aux enfants au bord de la rivière, sur l’herbe où le livre avait été posé avec défense de le prendre encore. Un peu plus loin, dans certains fonds assez incultes et assez mystérieux du parc, la rivière cessait d’être une eau rectiligne et artificielle, couverte de cygnes et bordée d’allées où souriaient des statues, et, par moments sautelante de carpes, se précipitait, passait à une allure rapide la clôture du parc, devenait une rivière dans le sens géographique du mot – une rivière qui devait avoir un nom, – et ne tardait pas à s’épandre (la même vraiment qu’entre les statues et sous les cygnes ?) entre des herbages où dormaient des boeufs et dont elle noyait les boutons d’or, sortes de prairies rendues par elle assez marécageuses et qui, tenant d’un côté au village par des tours informes, restes, disait-on, du moyen âge, joignaient de l’autre, par des chemins montants d’églantiers et d’aubépines, la « nature » qui s’étendait à l’infini, des villages qui avaient d’autres noms, l’inconnu. Je laissais les autres finir de goûter dans le bas du parc, au bord des cygnes, et je montais en courant dans le labyrinthe jusqu’à telle charmille où je m’asseyais, introuvable, adossé aux noisetiers taillés, apercevant le plant d’asperges, les bordures de fraisiers, le bassin où, certains jours, les chevaux faisaient monter l’eau en tournant, la porte blanche qui était la « fin du parc » en haut, et au-delà, les champs de bleuets et de coquelicots. Dans cette charmille, le silence était profond, le risque d’être découvert presque nul, la sécurité rendue plus douce par les cris éloignés qui, d’en bas, m’appelaient en vain, quelquefois même se rapprochaient, montaient les premiers talus, cherchant partout, puis s’en retournaient, n’ayant pas trouvé ; alors plus aucun bruit ; seul de temps en temps le son d’or des cloches qui au loin, par delà les plaines, semblait tinter derrière le ciel bleu, aurait pu m’avertir de l’heure qui passait ; mais, surpris par sa douceur et troublé par le silence plus profond, vidé des derniers sons, qui le suivait, je n’étais jamais sûr du nombre des coups. Ce n’était pas les cloches tonnantes qu’on entendait en rentrant dans le village – quand on approchait de l’église qui, de près, avait repris sa taille haute et raide, dressant sur le bleu du soir son capuchon d’ardoise ponctué de corbeaux – faire voler le son en éclats sur la place « pour les biens de la terre ». Elles n’arrivaient au bout du parc que faibles et douces et ne s’adressant pas à moi, mais à toute la campagne, à tous les villages, aux paysans isolés dans leur champ, elles ne me forçaient nullement à lever la tête, elles passaient près de moi, portant l’heure aux pays lointains, sans me voir, sans me connaître et sans me déranger. Et quelquefois à la maison, dans mon lit, longtemps après le dîner, les dernières heures de la soirée abritaient aussi ma lecture, mais cela, seulement les jours où j’étais arrivé aux derniers chapitres d’un livre, où il n’y avait plus beaucoup à lire pour arriver à la fin. Alors, risquant d’être puni si j’étais découvert et l’insomnie qui, le livre fini, se prolongerait peut-être toute la nuit, dès que mes parents étaient couchés je rallumais ma bougie ; tandis que, dans la rue toute proche, entre la maison de l’armurier et la poste, baignées de silence, il y avait plein d’étoiles au ciel sombre et pourtant bleu, et qu’à gauche, sur la ruelle exhaussée où commençait en tournant son ascension surélevée, on sentait veiller, monstrueuse et noire, l’abside de l’église dont les sculptures la nuit ne dormaient pas, l’église villageoise et pourtant historique, séjour magique du Bon Dieu, de la brioche bénite, des saints multicolores et des dames des châteaux voisins qui, les jours de fête, faisant, quand elles traversaient le marché, piailler les poules et regarder les commères, venaient à la messe « dans leurs attelages », non sans acheter au retour, chez le pâtissier de la place, juste après avoir quitté l’ombre du porche où les fidèles en poussant la porte à tambour semaient les rubis errants de la nef, quelques-uns de ces gâteaux en forme de tours, protégés du soleil par un store, – « manqués », « Saint-Honorés » et « génoises », – dont l’odeur oisive et sucrée est restée mêlée pour moi aux cloches de la grand’messe et à la gaieté des dimanches. Puis la dernière page était lue, le livre était fini. Il fallait arrêter la course éperdue des yeux et de la voix qui suivait sans bruit, s’arrêtant seulement pour reprendre haleine, dans un soupir profond. Alors, afin de donner aux tumultes depuis trop longtemps déchaînés en moi pour pouvoir se calmer ainsi d’autres mouvements à diriger, je me levais, je me mettais à marcher le long de mon lit, les yeux encore fixés à quelque point qu’on aurait vainement cherché dans la chambre ou dehors, car il n’était situé qu’à une distance d’âme, une de ces distances qui ne se mesurent pas par mètres et par lieues, comme les autres, et qu’il est d’ailleurs impossible de confondre avec elles quand on regarde les yeux « lointains » de ceux qui pensent « à autre chose ». Alors, quoi ? ce livre, ce n’était que cela ? Ces êtres à qui on avait donné plus de son attention et de sa tendresse qu’aux gens de la vie, n’osant pas toujours avouer à quel point on les aimait, et même quand nos parents nous trouvaient en train de lire et avaient l’air de sourire de notre émotion, fermant le livre, avec une indifférence affectée ou un ennui feint ; ces gens pour qui on avait haleté et sangloté, on ne les verrait plus jamais, on ne saurait plus rien d’eux. Déjà, depuis quelques pages, l’auteur, dans le cruel « Épilogue », avait eu soin de les « espacer » avec une indifférence incroyable pour qui savait l’intérêt avec lequel il les avait suivis jusque-là pas à pas. L’emploi de chaque heure de leur vie nous avait été narré. Puis subitement : « Vingt ans après ces événements on pouvait rencontrer dans les rues de Fougères Note. J’avoue que certain emploi de l’imparfait de l’indicatif – de ce temps cruel qui nous présente la vie comme quelque chose d’éphémère à la fois et de passif, qui, au moment même où il retrace nos actions, les frappe d’illusion, les anéantit dans le passé sans nous laisser comme le parfait la consolation de l’activité – est resté pour moi une source inépuisable de mystérieuses tristesses. Aujourd’hui encore je peux avoir pensé pendant des heures à la mort avec calme ; il me suffit d’ouvrir un volume des Lundis de Sainte-Beuve et d’y tomber par exemple sur cette phrase de Lamartine (il s’agit de Mme d’Albany) : « Rien ne rappelait en elle à cette époque... C’était une petite femme dont la taille un peu affaissée sous son poids avait perdu, etc. » pour me sentir envahi aussitôt par la plus profonde mélancolie. – Dans les romans, l’intention de faire de la peine est si visible chez l’auteur qu’on se raidit un peu plus. un vieillard encore droit, etc. » Et le mariage dont deux volumes avaient été employés à nous faire entrevoir la possibilité délicieuse, nous effrayant puis nous réjouissant de chaque obstacle dressé puis aplani, c’est par une phrase incidente d’un personnage secondaire que nous apprenions qu’il avait été célébré, nous ne savions pas au juste quand, dans cet étonnant épilogue écrit, semblait-il, du haut du ciel, par une personne indifférente à nos passions d’un jour, qui s’était substituée à l’auteur. On aurait tant voulu que le livre continuât, et, si c’était impossible, avoir d’autres renseignements sur tous ces personnages, apprendre maintenant quelque chose de leur vie, employer la nôtre à des choses qui ne fussent pas tout à fait étrangères à l’amour qu’ils nous avaient inspiré Note. On peut l’essayer, par une sorte de détour, pour les livres qui ne sont pas d’imagination pure et où il y a un substratum historique. Balzac, par exemple, dont l’oeuvre en quelque sorte impure est mêlée d’esprit et de réalité trop peu transformée, se prête parfois singulièrement à ce genre de lecture. Ou du moins il a trouvé le plus admirable de ces « lecteurs historiques » en M. Albert Sorel qui a écrit sur Une ténébreuse affaire et sur L’Envers de l’histoire contemporaine d’incomparables essais. Combien la lecture, au reste, cette jouissance à la fois ardente et rassise, semble bien convenir à M. Sorel, à cet esprit chercheur, à ce corps calme et puissant, la lecture, pendant laquelle les mille sensations de poésie et de bien-être confus qui s’envolent avec allégresse du fond de la bonne santé viennent composer autour de la rêverie du lecteur un plaisir doux et doré comme le miel. – Cet art d’ailleurs d’enfermer tant d’originales et fortes méditations dans une lecture, ce n’est pas qu’à propos d’oeuvres à demi historiques que M. Sorel l’a porté à cette perfection. Je me souviendrai toujours – et avec quelle reconnaissance – que la traduction de La Bible d’Amiens a été pour lui le sujet des plus puissantes pages peut-être qu’il ait jamais écrites. et dont l’objet nous faisait tout à coup défaut, ne pas avoir aimé en vain, pour une heure, des êtres qui demain ne seraient plus qu’un nom sur une page oubliée, dans un livre sans rapport avec la vie et sur la valeur duquel nous nous étions bien mépris puisque son lot ici-bas, nous le comprenions maintenant et nos parents nous l’apprenaient au besoin d’une phrase dédaigneuse, n’était nullement, comme nous l’avions cru, de contenir l’univers et la destinée, mais d’occuper une place fort étroite dans la bibliothèque du notaire, entre les fastes sans prestige du Journal de Modes illustré et de la Géographie d’Eure-et-Loir")
 
@@ -549,12 +550,22 @@ UTSNXOLRVWEAQHIF PKGZYMDBJC
 
 ** Observations
 
-Nous avons rencontré un problèmes au niveau de la fonction 6 au niveau des fréquences d'apparition. En effet, comme nous pouvons le voir sur le graphique ci-dessous plusieurs fréquences d'apparition sont quasiment identiques. Dans des textes, le tableau des fréquences n'est jamais le même que celui de références car le texte évolue en fonction de son écriture (choix des mots).
+Nous avons rencontré un problèmes au niveau de la fonction 6 au niveau des fréquences 
+d'apparition. En effet, comme nous pouvons le voir sur le graphique ci-dessous plusieurs 
+fréquences d'apparition sont quasiment identiques. Dans des textes, le tableau des 
+fréquences n'est jamais le même que celui de références car le texte évolue en fonction de 
+son écriture (choix des mots).
 
 [[https://www.apprendre-en-ligne.net/crypto/stat/batonsfr2.gif]]
 
-La longueur du texte est également un gros problème dans le décryptage sans clé car sur une phrase (voir 2^nd test) il n'apparait pas forcément toutes les lettres de l'alphabet. C'est pour cela que l'on obtient des tests plus concluant avec des longs textes (voir 3^eme test).
+La longueur du texte est également un gros problème dans le décryptage sans clé car sur 
+une phrase (voir 2^nd test) il n'apparait pas forcément toutes les lettres de l'alphabet. 
+C'est pour cela que l'on obtient des tests plus concluant avec des longs textes (voir 
+3^eme test).
 
-Pour que notre programme soit plus efficace, on aurait pu étudier la probabilité d'apparition d'une lettre après une autre comme pour les lettres /q/ et /u/ qui se suivent tout le temps.
+Pour que notre programme soit plus efficace, on aurait pu étudier la probabilité 
+d'apparition d'une lettre après une autre comme pour les lettres /q/ et /u/ qui se suivent 
+tout le temps, ou encore la probabilité d'apparition d'une même lettre deux fois de suite,
+comme les /ll/, /ss/, /mm/, etc.
 
 * Bilan Général
